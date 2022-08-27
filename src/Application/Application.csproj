@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
     <Folder Include="Interfaces\Services\" />
-    <Folder Include="Interfaces\Repositories\" />
-    <Folder Include="QueryFilters\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
