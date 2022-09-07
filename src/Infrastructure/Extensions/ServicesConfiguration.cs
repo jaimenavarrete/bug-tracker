@@ -1,4 +1,6 @@
-﻿using Infrastructure.Persistence;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +15,10 @@ namespace Infrastructure.Extensions
 
             // AutoMapper
             services.AddAutoMapper(typeof(DependencyInjection));
+
+            // FluentValidation
+           services.AddFluentValidationAutoValidation();
+           services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;
         }

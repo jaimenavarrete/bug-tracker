@@ -6,11 +6,11 @@ namespace Application.Interfaces.Repositories
     {
         Task<IEnumerable<Project>> GetAll();
 
-        Task<Project> GetById(string id);
+        Task<Project?> GetById(string id);
 
-        Task<Project> Insert(Project project);
+        Task<bool> Insert(Project project);
 
-        Task<Project> Update(Project project);
+        Task<bool> Update(Project project);
 
         Task<bool> Delete(string id);
     }

@@ -1,8 +1,9 @@
 ﻿using Application.DTOs;
-using Application.Interfaces.Repositories;
+using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Responses;
 
 namespace WebAPI.Controllers
 {
@@ -10,66 +11,69 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        private readonly IProjectRepository _projectRepository;
+        private readonly IProjectService _projectService;
         private readonly IMapper _mapper;
 
-        public ProjectController(IProjectRepository projectRepository, IMapper mapper)
+        public ProjectController(IProjectService projectService, IMapper mapper)
         {
-            _projectRepository = projectRepository;
+            _projectService = projectService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProjects()
         {
-            var projects = await _projectRepository.GetAll();
+            var projects = await _projectService.GetProjects();
             var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(projects);
 
-            return Ok(projectsDto);
+            var response = new ApiResponse<IEnumerable<ProjectResponseDto>>(projectsDto);
+
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProjectById(string id)
         {
-            var project = await _projectRepository.GetById(id);
+            var project = await _projectService.GetProjectById(id);
             var projectDto = _mapper.Map<ProjectResponseDto>(project);
 
-            return Ok(projectDto);
+            var response = new ApiResponse<ProjectResponseDto>(projectDto);
+
+            return Ok(response);
         }
 
         [HttpPost]
         public async Task<IActionResult> InsertProject(ProjectRequestDto projectDto)
         {
-            var userId = Guid.NewGuid().ToString();
-
             var project = _mapper.Map<Project>(projectDto);
-            project.AddCreationInfo(userId);
+            await _projectService.InsertProject(project);
+            var resultDto = _mapper.Map<ProjectResponseDto>(project);
 
-            await _projectRepository.Insert(project);
+            var response = new ApiResponse<ProjectResponseDto>(resultDto);
 
-            return Ok(project);
+            return Ok(response);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(string id, ProjectRequestDto projectDto)
         {
-            var userId = Guid.NewGuid().ToString();
+            var project = _mapper.Map<Project>(projectDto);
+            project.Id = id;
 
-            var project = await _projectRepository.GetById(id);
-            project = _mapper.Map(projectDto, project);
-            project.UpdateModificationInfo(userId);
+            var result = await _projectService.UpdateProject(project);
 
-            await _projectRepository.Update(project);
+            var response = new ApiResponse<bool>(result);
 
-            return Ok(project);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(string id)
         {
-            var result = await _projectRepository.Delete(id);
+            var result = await _projectService.DeleteProject(id);
+            var response = new ApiResponse<bool>(result);
 
-            return Ok(result);
+            return Ok(response);
         }
     }
 }

@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 var connectionString = builder.Configuration.GetConnectionString("BugTracker");
-builder.Services.AddServicesConfiguration(connectionString);
 
+builder.Services.AddServicesConfiguration(connectionString);
 builder.Services.AddDependencyInjection();
 
 var app = builder.Build();

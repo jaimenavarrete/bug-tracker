@@ -15,35 +15,37 @@ namespace Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<Project>> GetAll() => 
-            await _context.Projects.ToListAsync();
+            await _context.Projects.ToListAsync() ?? Enumerable.Empty<Project>();
 
-        public async Task<Project> GetById(string id) => 
-            await _context.Projects.FirstAsync(p => p.Id == id);
+        public async Task<Project?> GetById(string id) => 
+            await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task<Project> Insert(Project project)
+        public async Task<bool> Insert(Project project)
         {
             _context.Projects.Add(project);
-            await _context.SaveChangesAsync();
+            var affectedRows = await _context.SaveChangesAsync();
 
-            return project;
+            return affectedRows > 0;
         }
 
-        public async Task<Project> Update(Project project)
+        public async Task<bool> Update(Project project)
         {
             _context.Update(project);
-            await _context.SaveChangesAsync();
+            var affectedRows = await _context.SaveChangesAsync();
 
-            return project;
+            return affectedRows > 0;
         }
 
         public async Task<bool> Delete(string id)
         {
             var project = await GetById(id);
 
-            _context.Remove(project);
-            var rows = await _context.SaveChangesAsync();
+            if (project is null) return false;
 
-            return rows > 0;
+            _context.Remove(project);
+            var affectedRows = await _context.SaveChangesAsync();
+
+            return affectedRows > 0;
         }
     }
 }
