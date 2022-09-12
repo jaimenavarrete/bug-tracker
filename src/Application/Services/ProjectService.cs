@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Application.Services
 {
@@ -17,14 +18,12 @@ namespace Application.Services
 
         public async Task<Project?> GetProjectById(string id) => await _projectRepository.GetById(id);
 
-        public async Task<bool> InsertProject(Project project)
+        public async Task InsertProject(Project project)
         {
             var userId = Guid.NewGuid().ToString();
             project.AddCreationInfo(userId);
 
-            var result = await _projectRepository.Insert(project);
-
-            return result;
+            await _projectRepository.Insert(project);
         }
 
         public async Task<bool> UpdateProject(Project project)
@@ -33,7 +32,8 @@ namespace Application.Services
             
             var currentProject = await _projectRepository.GetById(project.Id);
 
-            if (currentProject is null) return false;
+            if (currentProject is null) 
+                throw new EntityNotFoundException("The project your are modifying does not exist.");
 
             currentProject.Name = project.Name;
             currentProject.OwnerId = project.OwnerId;
@@ -50,7 +50,12 @@ namespace Application.Services
 
         public async Task<bool> DeleteProject(string id)
         {
-            return await _projectRepository.Delete(id);
+            var project = await _projectRepository.GetById(id);
+
+            if (project is null)
+                throw new EntityNotFoundException("The project your are deleting does not exist.");
+
+            return await _projectRepository.Delete(project);
         }
     }
 }

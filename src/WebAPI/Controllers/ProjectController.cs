@@ -47,9 +47,9 @@ namespace WebAPI.Controllers
         {
             var project = _mapper.Map<Project>(projectDto);
             await _projectService.InsertProject(project);
-            var resultDto = _mapper.Map<ProjectResponseDto>(project);
+            var responseDto = _mapper.Map<ProjectResponseDto>(project);
 
-            var response = new ApiResponse<ProjectResponseDto>(resultDto);
+            var response = new ApiResponse<ProjectResponseDto>(responseDto);
 
             return Ok(response);
         }
@@ -71,6 +71,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteProject(string id)
         {
             var result = await _projectService.DeleteProject(id);
+
             var response = new ApiResponse<bool>(result);
 
             return Ok(response);

@@ -12,6 +12,6 @@ namespace Application.Interfaces.Repositories
 
         Task<bool> Update(Project project);
 
-        Task<bool> Delete(string id);
+        Task<bool> Delete(Project project);
     }
 }

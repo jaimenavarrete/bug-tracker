@@ -36,12 +36,8 @@ namespace Infrastructure.Repositories
             return affectedRows > 0;
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(Project project)
         {
-            var project = await GetById(id);
-
-            if (project is null) return false;
-
             _context.Remove(project);
             var affectedRows = await _context.SaveChangesAsync();
 

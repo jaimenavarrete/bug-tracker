@@ -4,8 +4,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-
 var connectionString = builder.Configuration.GetConnectionString("BugTracker");
 
 builder.Services.AddServicesConfiguration(connectionString);
