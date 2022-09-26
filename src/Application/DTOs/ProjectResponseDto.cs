@@ -10,8 +10,6 @@ namespace Application.DTOs
 
         public string StateId { get; set; } = null!;
 
-        public int MilestonesAmount { get; set; }
-
         public int TicketsAmount { get; set; }
 
         public DateTime? StartDate { get; set; }

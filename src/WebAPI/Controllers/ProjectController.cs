@@ -2,6 +2,7 @@
 using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Responses;
 
@@ -35,6 +36,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetProjectById(string id)
         {
             var project = await _projectService.GetProjectById(id);
+            if (project is null)
+                throw new EntityNotFoundException("The project you are looking for does not exist.");
+
             var projectDto = _mapper.Map<ProjectResponseDto>(project);
 
             var response = new ApiResponse<ProjectResponseDto>(projectDto);

@@ -33,7 +33,7 @@ namespace Application.Services
             var currentProject = await _projectRepository.GetById(project.Id);
 
             if (currentProject is null) 
-                throw new EntityNotFoundException("The project your are modifying does not exist.");
+                throw new EntityNotFoundException("The project you are modifying does not exist.");
 
             currentProject.Name = project.Name;
             currentProject.OwnerId = project.OwnerId;
@@ -53,7 +53,7 @@ namespace Application.Services
             var project = await _projectRepository.GetById(id);
 
             if (project is null)
-                throw new EntityNotFoundException("The project your are deleting does not exist.");
+                throw new EntityNotFoundException("The project you are deleting does not exist.");
 
             return await _projectRepository.Delete(project);
         }
