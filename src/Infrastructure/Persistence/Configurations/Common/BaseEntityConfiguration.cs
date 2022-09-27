@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations.Common
 {
-    public static class BaseConfiguration<T> where T : BaseEntity
+    public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseEntity
     {
-        public static void ConfigureBaseEntityProperties(EntityTypeBuilder<T> builder)
+        public virtual void Configure(EntityTypeBuilder<T> builder)
         {
             builder.HasKey(e => e.Id);
 

@@ -7,35 +7,38 @@ namespace Application.Services
 {
     public class ProjectService : IProjectService
     {
-        private readonly IProjectRepository _projectRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProjectService(IProjectRepository projectRepository)
+        public ProjectService(IUnitOfWork unitOfWork)
         {
-            _projectRepository = projectRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Project>> GetProjects() => await _projectRepository.GetAll();
+        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetAll();
 
-        public async Task<Project?> GetProjectById(string id) => await _projectRepository.GetById(id);
+        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetById(id);
 
         public async Task InsertProject(Project project)
         {
             var userId = Guid.NewGuid().ToString();
             project.AddCreationInfo(userId);
 
-            await _projectRepository.Insert(project);
+            _unitOfWork.ProjectRepository.Insert(project);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<bool> UpdateProject(Project project)
         {
             var userId = Guid.NewGuid().ToString();
             
-            var currentProject = await _projectRepository.GetById(project.Id);
+            var currentProject = await _unitOfWork.ProjectRepository.GetById(project.Id);
 
-            if (currentProject is null) 
+            if (currentProject is null)
                 throw new EntityNotFoundException("The project you are modifying does not exist.");
 
             currentProject.Name = project.Name;
+            currentProject.Description = project.Description;
+            currentProject.TicketsPrefix = project.TicketsPrefix;
             currentProject.OwnerId = project.OwnerId;
             currentProject.StateId = project.StateId;
             currentProject.StartDate = project.StartDate;
@@ -43,19 +46,22 @@ namespace Application.Services
             currentProject.GroupId = project.GroupId;
             currentProject.UpdateModificationInfo(userId);
 
-            var result = await _projectRepository.Update(currentProject);
+            var result = await _unitOfWork.CompleteAsync();
 
             return result;
         }
 
         public async Task<bool> DeleteProject(string id)
         {
-            var project = await _projectRepository.GetById(id);
+            var project = await _unitOfWork.ProjectRepository.GetById(id);
 
             if (project is null)
                 throw new EntityNotFoundException("The project you are deleting does not exist.");
 
-            return await _projectRepository.Delete(project);
+            _unitOfWork.ProjectRepository.Delete(project);
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
         }
     }
 }

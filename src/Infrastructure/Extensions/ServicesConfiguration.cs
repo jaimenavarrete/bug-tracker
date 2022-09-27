@@ -11,7 +11,7 @@ namespace Infrastructure.Extensions
     {
         public static IServiceCollection AddServicesConfiguration(this IServiceCollection services, string connectionString)
         {
-            // Filters
+            // Filters and controllers
             services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
 
             // Database

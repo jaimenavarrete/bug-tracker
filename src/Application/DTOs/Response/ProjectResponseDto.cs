@@ -1,14 +1,20 @@
 ﻿using Application.Common;
 
-namespace Application.DTOs
+namespace Application.DTOs.Response
 {
-    public class ProjectRequestDto
+    public class ProjectResponseDto : BaseResponseDto
     {
         public string Name { get; set; } = null!;
+
+        public string? Description { get; set; }
+
+        public string TicketsPrefix { get; set; } = null!;
 
         public string? OwnerId { get; set; }
 
         public string StateId { get; set; } = null!;
+
+        public int TicketsAmount { get; set; }
 
         public DateTime? StartDate { get; set; }
 

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
+    public class TicketConfiguration : BaseEntityConfiguration<Ticket>
     {
-        public void Configure(EntityTypeBuilder<Ticket> builder)
+        public override void Configure(EntityTypeBuilder<Ticket> builder)
         {
-            BaseConfiguration<Ticket>.ConfigureBaseEntityProperties(builder);
+            base.Configure(builder);
 
             builder.Property(e => e.Name).HasMaxLength(75);
 

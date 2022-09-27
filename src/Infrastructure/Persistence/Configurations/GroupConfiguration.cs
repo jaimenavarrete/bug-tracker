@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class GroupConfiguration : IEntityTypeConfiguration<Group>
+    public class GroupConfiguration : BaseEntityConfiguration<Group>
     {
-        public void Configure(EntityTypeBuilder<Group> builder)
+        public override void Configure(EntityTypeBuilder<Group> builder)
         {
-            BaseConfiguration<Group>.ConfigureBaseEntityProperties(builder);
+            base.Configure(builder);
 
             builder.Property(e => e.Name).HasMaxLength(75);
 

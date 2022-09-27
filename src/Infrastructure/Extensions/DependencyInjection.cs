@@ -1,6 +1,8 @@
-﻿using Application.Interfaces.Repositories;
+﻿using Application.Common;
+using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Services;
+using Infrastructure.Common;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +13,7 @@ namespace Infrastructure.Extensions
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
             // Repositories
-            services.AddTransient<IProjectRepository, ProjectRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // Services
             services.AddTransient<IProjectService, ProjectService>();

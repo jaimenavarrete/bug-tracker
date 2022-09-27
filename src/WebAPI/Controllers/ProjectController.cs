@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Response;
+using Application.DTOs.Request;
 using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;

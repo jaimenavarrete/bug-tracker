@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class ProjectConfiguration : IEntityTypeConfiguration<Project>
+    public class ProjectConfiguration : BaseEntityConfiguration<Project>
     {
-        public void Configure(EntityTypeBuilder<Project> builder)
+        public override void Configure(EntityTypeBuilder<Project> builder)
         {
-            BaseConfiguration<Project>.ConfigureBaseEntityProperties(builder);
+            base.Configure(builder);
 
             builder.Property(e => e.Name)
                 .IsRequired()

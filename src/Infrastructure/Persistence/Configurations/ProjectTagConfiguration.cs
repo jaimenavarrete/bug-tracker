@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class ProjectTagConfiguration : IEntityTypeConfiguration<ProjectTag>
+    public class ProjectTagConfiguration : BaseEntityConfiguration<ProjectTag>
     {
-        public void Configure(EntityTypeBuilder<ProjectTag> builder)
+        public override void Configure(EntityTypeBuilder<ProjectTag> builder)
         {
-            BaseConfiguration<ProjectTag>.ConfigureBaseEntityProperties(builder);
+            base.Configure(builder);
 
             builder.Property(e => e.Name).HasMaxLength(25);
 
