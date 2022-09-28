@@ -7,6 +7,8 @@ namespace Application.Interfaces.Repositories
     {
         IBaseRepository<Project> ProjectRepository { get; }
 
+        IBaseRepository<Ticket> TicketRepository { get; }
+
         bool Complete();
 
         Task<bool> CompleteAsync();

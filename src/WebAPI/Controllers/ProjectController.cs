@@ -9,7 +9,7 @@ using WebAPI.Responses;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/project")]
+    [Route("api/projects")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
