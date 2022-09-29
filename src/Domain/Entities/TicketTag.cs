@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public partial class TicketTag : BaseEntity
+    public class TicketTag : BaseEntity
     {
         public TicketTag()
         {
@@ -16,8 +16,8 @@ namespace Domain.Entities
         public string ColorHexCode { get; set; } = null!;
 
 
-        public virtual Project? Project { get; set; }
+        public Project? Project { get; set; }
 
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public IEnumerable<Ticket> Tickets { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public partial class Ticket : BaseEntity
+    public class Ticket : BaseEntity
     {
         public Ticket()
         {
@@ -30,16 +30,16 @@ namespace Domain.Entities
         public string? ProjectId { get; set; }
 
 
-        public virtual Classification? Classification { get; set; }
+        public Classification? Classification { get; set; }
 
-        public virtual GravityLevel? Gravity { get; set; }
+        public GravityLevel? Gravity { get; set; }
 
-        public virtual Project? Project { get; set; }
+        public Project? Project { get; set; }
 
-        public virtual ReproducibilityLevel? Reproducibility { get; set; }
+        public ReproducibilityLevel? Reproducibility { get; set; }
 
-        public virtual TicketState State { get; set; } = null!;
+        public TicketState State { get; set; } = null!;
 
-        public virtual ICollection<TicketTag> Tags { get; set; }
+        public IEnumerable<TicketTag> Tags { get; set; }
     }
 }

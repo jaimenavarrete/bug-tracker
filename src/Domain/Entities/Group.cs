@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public partial class Group : BaseEntity
+    public class Group : BaseEntity
     {
         public Group()
         {
@@ -16,10 +16,10 @@ namespace Domain.Entities
         public string? Description { get; set; }
 
 
-        public virtual ICollection<ProjectState> ProjectStates { get; set; }
+        public IEnumerable<ProjectState> ProjectStates { get; set; }
 
-        public virtual ICollection<ProjectTag> ProjectTags { get; set; }
+        public IEnumerable<ProjectTag> ProjectTags { get; set; }
 
-        public virtual ICollection<Project> Projects { get; set; }
+        public IEnumerable<Project> Projects { get; set; }
     }
 }

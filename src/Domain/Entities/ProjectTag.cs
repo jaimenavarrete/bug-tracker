@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public partial class ProjectTag : BaseEntity
+    public class ProjectTag : BaseEntity
     {
         public ProjectTag()
         {
@@ -16,8 +16,8 @@ namespace Domain.Entities
         public string ColorHexCode { get; set; } = null!;
 
 
-        public virtual Group? Group { get; set; }
+        public Group? Group { get; set; }
 
-        public virtual ICollection<Project> Projects { get; set; }
+        public IEnumerable<Project> Projects { get; set; }
     }
 }

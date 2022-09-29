@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public partial class GravityLevel
+    public class GravityLevel
     {
         public GravityLevel()
         {
@@ -12,6 +12,6 @@
         public string Name { get; set; } = null!;
 
 
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public IEnumerable<Ticket> Tickets { get; set; }
     }
 }

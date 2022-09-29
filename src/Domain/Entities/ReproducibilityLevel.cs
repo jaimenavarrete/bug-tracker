@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public partial class ReproducibilityLevel
+    public class ReproducibilityLevel
     {
         public ReproducibilityLevel()
         {
@@ -12,6 +12,6 @@
         public string Name { get; set; } = null!;
 
 
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public IEnumerable<Ticket> Tickets { get; set; }
     }
 }
