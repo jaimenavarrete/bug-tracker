@@ -7,7 +7,7 @@ namespace Application.Interfaces.Repositories
     {
         IBaseRepository<Project> ProjectRepository { get; }
 
-        IBaseRepository<Ticket> TicketRepository { get; }
+        ITicketRepository TicketRepository { get; }
 
         bool Complete();
 

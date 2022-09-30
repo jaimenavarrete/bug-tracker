@@ -20,17 +20,47 @@ namespace Application.Services
 
         public async Task InsertTicket(Ticket ticket)
         {
-            throw new NotImplementedException();
+            var userId = Guid.NewGuid().ToString();
+            ticket.AddCreationInfo(userId);
+
+            _unitOfWork.TicketRepository.Insert(ticket);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<bool> UpdateTicket(Ticket ticket)
         {
-            throw new NotImplementedException();
+            var currentTicket = await _unitOfWork.TicketRepository.GetById(ticket.Id);
+
+            if (currentTicket is null)
+                throw new EntityNotFoundException("The ticket you are modifying does not exist.");
+
+            currentTicket.Name = ticket.Name;
+            currentTicket.Description = ticket.Description;
+            currentTicket.SubmitterId = ticket.SubmitterId;
+            currentTicket.StateId = ticket.StateId;
+            currentTicket.AssignedUserId = ticket.AssignedUserId;
+            currentTicket.CompletionDate = ticket.CompletionDate;
+            currentTicket.GravityId = ticket.GravityId;
+            currentTicket.ReproducibilityId = ticket.ReproducibilityId;
+            currentTicket.ClassificationId = ticket.ClassificationId;
+            currentTicket.ProjectId = ticket.ProjectId;
+
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
         }
 
         public async Task<bool> DeleteTicket(string id)
         {
-            throw new NotImplementedException();
+            var ticket = await _unitOfWork.TicketRepository.GetById(id);
+
+            if (ticket is null)
+                throw new EntityNotFoundException("The ticket you are deleting does not exist.");
+
+            _unitOfWork.TicketRepository.Delete(ticket);
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
         }
     }
 }

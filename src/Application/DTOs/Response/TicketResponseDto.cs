@@ -1,5 +1,4 @@
 ﻿using Application.Common;
-using Domain.Entities;
 
 namespace Application.DTOs.Response
 {
@@ -11,20 +10,20 @@ namespace Application.DTOs.Response
 
         public string SubmitterId { get; set; } = null!;
 
-        public string StateId { get; set; } = null!;
+        public StateResponseDto State { get; set; } = null!;
 
         public string? AssignedUserId { get; set; }
 
         public DateTime? CompletionDate { get; set; }
 
-        public int? GravityId { get; set; }
+        public LookupResponseDto? Gravity { get; set; }
 
-        public int? ReproducibilityId { get; set; }
+        public LookupResponseDto? Reproducibility { get; set; }
 
-        public int? ClassificationId { get; set; }
+        public LookupResponseDto? Classification { get; set; }
 
         public string? ProjectId { get; set; }
 
-        public IEnumerable<TicketTag> Tags { get; set; } = null!;
+        public IEnumerable<TagResponseDto> Tags { get; set; } = null!;
     }
 }

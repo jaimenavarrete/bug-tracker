@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories
     {
         private readonly BugTrackerContext _context;
         private readonly IBaseRepository<Project> _projectRepository = null!;
-        private readonly IBaseRepository<Ticket> _ticketRepository = null!;
+        private readonly ITicketRepository _ticketRepository = null!;
 
         public UnitOfWork(BugTrackerContext context)
         {
@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
 
         public IBaseRepository<Project> ProjectRepository => _projectRepository ?? new BaseRepository<Project>(_context);
 
-        public IBaseRepository<Ticket> TicketRepository => _ticketRepository ?? new BaseRepository<Ticket>(_context);
+        public ITicketRepository TicketRepository => _ticketRepository ?? new TicketRepository(_context);
 
         public bool Complete() => _context.SaveChanges() > 0;
 
