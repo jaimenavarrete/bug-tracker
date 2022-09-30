@@ -8,7 +8,7 @@ namespace Application.Interfaces.Services
 
         Task<Ticket?> GetTicketById(string id);
 
-        Task InsertTicket(Ticket ticket);
+        Task<Ticket> InsertTicket(Ticket ticket);
 
         Task<bool> UpdateTicket(Ticket ticket);
 

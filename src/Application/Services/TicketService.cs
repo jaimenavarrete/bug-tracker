@@ -18,13 +18,18 @@ namespace Application.Services
 
         public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetById(id);
 
-        public async Task InsertTicket(Ticket ticket)
+        public async Task<Ticket> InsertTicket(Ticket ticket)
         {
             var userId = Guid.NewGuid().ToString();
             ticket.AddCreationInfo(userId);
 
             _unitOfWork.TicketRepository.Insert(ticket);
-            await _unitOfWork.CompleteAsync();
+            var result = await _unitOfWork.CompleteAsync();
+
+            if(!result)
+                throw new EntityNotFoundException("The ticket could not be created.");
+
+            return await _unitOfWork.TicketRepository.GetById(ticket.Id) ?? ticket;
         }
 
         public async Task<bool> UpdateTicket(Ticket ticket)

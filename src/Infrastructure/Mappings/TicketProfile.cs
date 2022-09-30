@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Response;
+﻿using Application.DTOs.Request;
+using Application.DTOs.Response;
 using AutoMapper;
 using Domain.Entities;
 
@@ -9,6 +10,7 @@ namespace Infrastructure.Mappings
         public TicketProfile()
         {
             CreateMap<Ticket, TicketResponseDto>();
+            CreateMap<TicketRequestDto, Ticket>();
         }
     }
 }

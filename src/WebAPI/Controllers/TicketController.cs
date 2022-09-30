@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Response;
+﻿using Application.DTOs.Request;
+using Application.DTOs.Response;
 using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
@@ -38,6 +39,19 @@ namespace WebAPI.Controllers
             var ticketDto = _mapper.Map<TicketResponseDto>(ticket);
 
             var response = new ApiResponse<TicketResponseDto>(ticketDto);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InsertTicket(TicketRequestDto ticketDto)
+        {
+            var ticket = _mapper.Map<Ticket>(ticketDto);
+            ticket = await _ticketService.InsertTicket(ticket);
+
+            var responseDto = _mapper.Map<TicketResponseDto>(ticket);
+
+            var response = new ApiResponse<TicketResponseDto>(responseDto);
 
             return Ok(response);
         }
