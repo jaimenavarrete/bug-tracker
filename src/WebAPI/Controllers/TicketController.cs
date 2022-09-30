@@ -55,5 +55,28 @@ namespace WebAPI.Controllers
 
             return Ok(response);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTicket(string id, TicketRequestDto ticketDto)
+        {
+            var ticket = _mapper.Map<Ticket>(ticketDto);
+            ticket.Id = id;
+
+            var result = await _ticketService.UpdateTicket(ticket);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTicket(string id)
+        {
+            var result = await _ticketService.DeleteTicket(id);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
+        }
     }
 }
