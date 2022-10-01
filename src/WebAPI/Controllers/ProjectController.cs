@@ -51,7 +51,8 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> InsertProject(ProjectRequestDto projectDto)
         {
             var project = _mapper.Map<Project>(projectDto);
-            await _projectService.InsertProject(project);
+            project = await _projectService.InsertProject(project);
+            
             var responseDto = _mapper.Map<ProjectResponseDto>(project);
 
             var response = new ApiResponse<ProjectResponseDto>(responseDto);

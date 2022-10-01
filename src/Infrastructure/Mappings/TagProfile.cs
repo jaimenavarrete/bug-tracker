@@ -8,6 +8,7 @@ namespace Infrastructure.Mappings
     {
         public TagProfile()
         {
+            CreateMap<ProjectTag, TagResponseDto>();
             CreateMap<TicketTag, TagResponseDto>();
         }
     }

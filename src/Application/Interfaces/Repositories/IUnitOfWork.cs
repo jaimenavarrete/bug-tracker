@@ -5,7 +5,7 @@ namespace Application.Interfaces.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        IBaseRepository<Project> ProjectRepository { get; }
+        IProjectRepository ProjectRepository { get; }
 
         ITicketRepository TicketRepository { get; }
 

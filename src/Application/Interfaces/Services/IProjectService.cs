@@ -8,7 +8,7 @@ namespace Application.Interfaces.Services
 
         Task<Project?> GetProjectById(string id);
 
-        Task InsertProject(Project project);
+        Task<Project?> InsertProject(Project project);
 
         Task<bool> UpdateProject(Project project);
 

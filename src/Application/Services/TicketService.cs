@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetTicketsWithAllEntities();
+        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetTicketsWithEntities();
 
-        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithAllEntitiesById(id);
+        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithEntitiesById(id);
 
         public async Task<Ticket> InsertTicket(Ticket ticket)
         {
@@ -29,7 +29,7 @@ namespace Application.Services
             if(!result)
                 throw new EntityNotFoundException("The ticket could not be created.");
 
-            return await _unitOfWork.TicketRepository.GetTicketWithAllEntitiesById(ticket.Id) ?? ticket;
+            return await _unitOfWork.TicketRepository.GetTicketWithEntitiesById(ticket.Id) ?? ticket;
         }
 
         public async Task<bool> UpdateTicket(Ticket ticket)

@@ -14,17 +14,22 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetAll();
+        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetProjectsWithEntities();
 
-        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetById(id);
+        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetProjectWithEntitiesById(id);
 
-        public async Task InsertProject(Project project)
+        public async Task<Project?> InsertProject(Project project)
         {
             var userId = Guid.NewGuid().ToString();
             project.AddCreationInfo(userId);
 
             _unitOfWork.ProjectRepository.Insert(project);
-            await _unitOfWork.CompleteAsync();
+            var result = await _unitOfWork.CompleteAsync();
+
+            if (!result)
+                throw new EntityNotFoundException("The project could not be created");
+
+            return await _unitOfWork.ProjectRepository.GetProjectWithEntitiesById(project.Id);
         }
 
         public async Task<bool> UpdateProject(Project project)
@@ -53,10 +58,13 @@ namespace Application.Services
 
         public async Task<bool> DeleteProject(string id)
         {
-            var project = await _unitOfWork.ProjectRepository.GetById(id);
+            var project = await _unitOfWork.ProjectRepository.GetProjectWithTagsById(id);
 
             if (project is null)
                 throw new EntityNotFoundException("The project you are deleting does not exist.");
+
+            // Remove the tags assigned to this project
+            project.Tags = Enumerable.Empty<ProjectTag>();
 
             _unitOfWork.ProjectRepository.Delete(project);
             var result = await _unitOfWork.CompleteAsync();

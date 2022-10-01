@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Domain.Entities;
 
 namespace Application.DTOs.Response
 {
@@ -12,7 +13,7 @@ namespace Application.DTOs.Response
 
         public string? OwnerId { get; set; }
 
-        public string StateId { get; set; } = null!;
+        public StateResponseDto State { get; set; } = null!;
 
         public int TicketsAmount { get; set; }
 
@@ -20,6 +21,8 @@ namespace Application.DTOs.Response
 
         public DateTime? CompletionDate { get; set; }
 
-        public string? GroupId { get; set; }
+        public GroupResponseDto? Group { get; set; }
+
+        public IEnumerable<TagResponseDto> Tags { get; set; } = null!;
     }
 }

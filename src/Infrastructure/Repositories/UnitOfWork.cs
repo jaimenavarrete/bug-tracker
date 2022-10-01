@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly BugTrackerContext _context;
-        private readonly IBaseRepository<Project> _projectRepository = null!;
+        private readonly IProjectRepository _projectRepository = null!;
         private readonly ITicketRepository _ticketRepository = null!;
 
         public UnitOfWork(BugTrackerContext context)
@@ -17,7 +17,7 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public IBaseRepository<Project> ProjectRepository => _projectRepository ?? new BaseRepository<Project>(_context);
+        public IProjectRepository ProjectRepository => _projectRepository ?? new ProjectRepository(_context);
 
         public ITicketRepository TicketRepository => _ticketRepository ?? new TicketRepository(_context);
 
