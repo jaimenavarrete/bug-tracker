@@ -8,8 +8,8 @@ namespace Infrastructure.Mappings
     {
         public StateProfile()
         {
-            CreateMap<ProjectState, StateResponseDto>();
-            CreateMap<TicketState, StateResponseDto>();
+            CreateMap<ProjectState, StateMiniResponseDto>();
+            CreateMap<TicketState, StateMiniResponseDto>();
         }
     }
 }

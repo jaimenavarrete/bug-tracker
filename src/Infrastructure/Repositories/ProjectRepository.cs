@@ -13,7 +13,7 @@ namespace Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<Project>> GetProjectsWithEntities() =>
-            await GetProjectsWithEntitiesQuery().ToListAsync();
+            await GetProjectsWithEntitiesQuery().ToListAsync() ?? Enumerable.Empty<Project>();
 
         public async Task<Project?> GetProjectWithEntitiesById(string id) =>
             await GetProjectsWithEntitiesQuery().FirstOrDefaultAsync(p => p.Id == id);

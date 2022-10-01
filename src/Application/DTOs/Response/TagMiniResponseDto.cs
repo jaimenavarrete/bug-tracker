@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.Response
 {
-    public class TagResponseDto
+    public class TagMiniResponseDto
     {
         public string Id { get; set; } = null!;
 

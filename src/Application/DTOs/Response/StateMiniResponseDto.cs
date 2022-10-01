@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.Response
 {
-    public class StateResponseDto
+    public class StateMiniResponseDto
     {
         public string Id { get; set; } = null!;
 

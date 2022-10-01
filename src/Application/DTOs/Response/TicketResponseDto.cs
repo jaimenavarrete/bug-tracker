@@ -10,7 +10,7 @@ namespace Application.DTOs.Response
 
         public string SubmitterId { get; set; } = null!;
 
-        public StateResponseDto State { get; set; } = null!;
+        public StateMiniResponseDto State { get; set; } = null!;
 
         public string? AssignedUserId { get; set; }
 
@@ -24,6 +24,6 @@ namespace Application.DTOs.Response
 
         public string? ProjectId { get; set; }
 
-        public IEnumerable<TagResponseDto> Tags { get; set; } = null!;
+        public IEnumerable<TagMiniResponseDto> Tags { get; set; } = null!;
     }
 }

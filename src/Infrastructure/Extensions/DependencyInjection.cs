@@ -16,6 +16,7 @@ namespace Infrastructure.Extensions
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // Services
+            services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<ITicketService, TicketService>();
 
