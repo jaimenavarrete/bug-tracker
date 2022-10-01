@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetAll();
+        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetTicketsWithAllEntities();
 
-        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetById(id);
+        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithAllEntitiesById(id);
 
         public async Task<Ticket> InsertTicket(Ticket ticket)
         {
@@ -29,7 +29,7 @@ namespace Application.Services
             if(!result)
                 throw new EntityNotFoundException("The ticket could not be created.");
 
-            return await _unitOfWork.TicketRepository.GetById(ticket.Id) ?? ticket;
+            return await _unitOfWork.TicketRepository.GetTicketWithAllEntitiesById(ticket.Id) ?? ticket;
         }
 
         public async Task<bool> UpdateTicket(Ticket ticket)
@@ -57,10 +57,13 @@ namespace Application.Services
 
         public async Task<bool> DeleteTicket(string id)
         {
-            var ticket = await _unitOfWork.TicketRepository.GetById(id);
+            var ticket = await _unitOfWork.TicketRepository.GetTicketWithTagsById(id);
 
             if (ticket is null)
                 throw new EntityNotFoundException("The ticket you are deleting does not exist.");
+
+            // Remove the tags assigned to this ticket
+            ticket.Tags = Enumerable.Empty<TicketTag>();
 
             _unitOfWork.TicketRepository.Delete(ticket);
             var result = await _unitOfWork.CompleteAsync();

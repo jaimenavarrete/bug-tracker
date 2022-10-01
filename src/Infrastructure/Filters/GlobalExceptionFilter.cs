@@ -19,7 +19,7 @@ namespace Infrastructure.Filters
                 Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.6.1",
                 Status = (int)HttpStatusCode.InternalServerError,
                 Title = HttpStatusCode.InternalServerError.ToString(),
-                Error = context.Exception.Message,
+                Error = context.Exception.ToString(),
                 TraceId = Activity.Current?.Id ?? context.HttpContext.TraceIdentifier
             };
 

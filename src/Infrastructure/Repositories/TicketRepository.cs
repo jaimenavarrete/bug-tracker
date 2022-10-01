@@ -12,13 +12,16 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public override async Task<IEnumerable<Ticket>> GetAll() => 
-            await GetAllTicketsQuery().ToListAsync() ?? Enumerable.Empty<Ticket>();
+        public async Task<IEnumerable<Ticket>> GetTicketsWithAllEntities() => 
+            await GetTicketsWithEntitiesQuery().ToListAsync() ?? Enumerable.Empty<Ticket>();
 
-        public override async Task<Ticket?> GetById(string id) => 
-            await GetAllTicketsQuery().FirstOrDefaultAsync(t => t.Id == id);
+        public async Task<Ticket?> GetTicketWithAllEntitiesById(string id) => 
+            await GetTicketsWithEntitiesQuery().FirstOrDefaultAsync(t => t.Id == id);
 
-        private IQueryable<Ticket> GetAllTicketsQuery()
+        public async Task<Ticket?> GetTicketWithTagsById(string id) =>
+            await _entity.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == id);
+
+        private IQueryable<Ticket> GetTicketsWithEntitiesQuery()
         {
             return _entity.Include(t => t.State)
                 .Include(t => t.Tags)

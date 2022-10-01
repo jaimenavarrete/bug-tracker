@@ -16,9 +16,9 @@ namespace Infrastructure.Common
             _entity = _context.Set<T>();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAll() => await _entity.ToListAsync() ?? Enumerable.Empty<T>();
+        public async Task<IEnumerable<T>> GetAll() => await _entity.ToListAsync() ?? Enumerable.Empty<T>();
 
-        public virtual async Task<T?> GetById(string id) => await _entity.FindAsync(id);
+        public async Task<T?> GetById(string id) => await _entity.FindAsync(id);
 
         public void Insert(T entity) => _entity.Add(entity);
 
