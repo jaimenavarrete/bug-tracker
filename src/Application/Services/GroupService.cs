@@ -31,5 +31,36 @@ namespace Application.Services
 
             return group;
         }
+
+        public async Task<bool> UpdateGroup(Group group)
+        {
+            var userId = Guid.NewGuid().ToString();
+
+            var currentGroup = await _unitOfWork.GroupRepository.GetById(group.Id);
+
+            if (currentGroup is null)
+                throw new EntityNotFoundException("The group you are modifying does not exist.");
+
+            currentGroup.Name = group.Name;
+            currentGroup.Description = group.Description;
+            currentGroup.UpdateModificationInfo(userId);
+
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
+        }
+
+        public async Task<bool> DeleteGroup(string id)
+        {
+            var group = await _unitOfWork.GroupRepository.GetById(id);
+
+            if (group is null)
+                throw new EntityNotFoundException("The group you are deleting does not exist.");
+
+            _unitOfWork.GroupRepository.Delete(group);
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
+        }
     }
 }

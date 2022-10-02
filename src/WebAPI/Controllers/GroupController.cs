@@ -59,5 +59,28 @@ namespace WebAPI.Controllers
 
             return Ok(response);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateGroup(string id, GroupRequestDto groupDto)
+        {
+            var group = _mapper.Map<Group>(groupDto);
+            group.Id = id;
+
+            var result = await _groupService.UpdateGroup(group);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProject(string id)
+        {
+            var result = await _groupService.DeleteGroup(id);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
+        }
     }
 }
