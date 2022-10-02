@@ -7,5 +7,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<Group>> GetGroups();
 
         Task<Group?> GetGroupById(string id);
+
+        Task<Group?> InsertGroup(Group group);
     }
 }

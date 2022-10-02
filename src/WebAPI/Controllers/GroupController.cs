@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Response;
+﻿using Application.DTOs.Request;
+using Application.DTOs.Response;
 using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
@@ -42,6 +43,19 @@ namespace WebAPI.Controllers
             var groupDto = _mapper.Map<GroupResponseDto>(group);
 
             var response = new ApiResponse<GroupResponseDto>(groupDto);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InsertGroup(GroupRequestDto groupDto)
+        {
+            var group = _mapper.Map<Group>(groupDto);
+            group = await _groupService.InsertGroup(group);
+
+            var responseDto = _mapper.Map<GroupResponseDto>(group);
+
+            var response = new ApiResponse<GroupResponseDto>(responseDto);
 
             return Ok(response);
         }
