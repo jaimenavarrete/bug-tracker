@@ -4,12 +4,12 @@ using Domain.Entities;
 
 namespace Infrastructure.Mappings
 {
-    public class StateProfile : Profile
+    public class TicketStateProfile : Profile
     {
-        public StateProfile()
+        public TicketStateProfile()
         {
-            CreateMap<ProjectState, StateMiniResponseDto>();
             CreateMap<TicketState, StateMiniResponseDto>();
+            CreateMap<TicketState, TicketStateResponseDto>();
         }
     }
 }

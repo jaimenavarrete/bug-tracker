@@ -11,6 +11,10 @@ namespace Application.Interfaces.Repositories
 
         ITicketRepository TicketRepository { get; }
 
+        IBaseRepository<ProjectState> ProjectStateRepository { get; }
+
+        IBaseRepository<TicketState> TicketStateRepository { get; }
+
         bool Complete();
 
         Task<bool> CompleteAsync();
