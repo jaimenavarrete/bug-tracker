@@ -7,5 +7,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<TicketState>> GetTicketStates();
 
         Task<TicketState?> GetTicketStateById(string id);
+
+        Task<TicketState?> InsertTicketState(TicketState ticketState);
     }
 }

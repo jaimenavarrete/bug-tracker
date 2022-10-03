@@ -1,6 +1,8 @@
-﻿using Application.DTOs.Response;
+﻿using Application.DTOs.Request;
+using Application.DTOs.Response;
 using Application.Interfaces.Services;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Responses;
@@ -41,6 +43,19 @@ namespace WebAPI.Controllers
             var projectStateDto = _mapper.Map<ProjectStateResponseDto>(projectState);
 
             var response = new ApiResponse<ProjectStateResponseDto>(projectStateDto);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InsertProjectState(ProjectStateRequestDto projectStateRequestDto)
+        {
+            var projectState = _mapper.Map<ProjectState>(projectStateRequestDto);
+            projectState = await _projectStateService.InsertProjectState(projectState);
+
+            var responseDto = _mapper.Map<ProjectStateResponseDto>(projectState);
+
+            var response = new ApiResponse<ProjectStateResponseDto>(responseDto);
 
             return Ok(response);
         }

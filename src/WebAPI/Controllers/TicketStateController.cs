@@ -1,6 +1,8 @@
-﻿using Application.DTOs.Response;
+﻿using Application.DTOs.Request;
+using Application.DTOs.Response;
 using Application.Interfaces.Services;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Responses;
@@ -41,6 +43,19 @@ namespace WebAPI.Controllers
             var ticketStateDto = _mapper.Map<TicketStateResponseDto>(ticketState);
 
             var response = new ApiResponse<TicketStateResponseDto>(ticketStateDto);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InsertTicketState(TicketStateRequestDto ticketStateRequestDto)
+        {
+            var ticketState = _mapper.Map<TicketState>(ticketStateRequestDto);
+            ticketState = await _ticketStateService.InsertTicketState(ticketState);
+
+            var responseDto = _mapper.Map<TicketStateResponseDto>(ticketState);
+
+            var response = new ApiResponse<TicketStateResponseDto>(responseDto);
 
             return Ok(response);
         }

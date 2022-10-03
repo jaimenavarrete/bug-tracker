@@ -7,5 +7,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<ProjectState>> GetProjectStates();
 
         Task<ProjectState?> GetProjectStateById(string id);
+
+        Task<ProjectState?> InsertProjectState(ProjectState projectState);
     }
 }

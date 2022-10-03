@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Response;
+﻿using Application.DTOs.Request;
+using Application.DTOs.Response;
 using AutoMapper;
 using Domain.Entities;
 
@@ -10,6 +11,7 @@ namespace Infrastructure.Mappings
         {
             CreateMap<TicketState, StateMiniResponseDto>();
             CreateMap<TicketState, TicketStateResponseDto>();
+            CreateMap<TicketStateRequestDto, TicketState>();
         }
     }
 }
