@@ -31,5 +31,37 @@ namespace Application.Services
 
             return await _unitOfWork.TicketStateRepository.GetById(ticketState.Id);
         }
+
+        public async Task<bool> UpdateTicketState(TicketState ticketState)
+        {
+            var userId = Guid.NewGuid().ToString();
+
+            var currentTicketState = await _unitOfWork.TicketStateRepository.GetById(ticketState.Id);
+
+            if (currentTicketState is null)
+                throw new EntityNotFoundException("The ticket state you are modifying does not exist.");
+
+            currentTicketState.Name = ticketState.Name;
+            currentTicketState.ProjectId = ticketState.ProjectId;
+            currentTicketState.ColorHexCode = ticketState.ColorHexCode;
+            currentTicketState.UpdateModificationInfo(userId);
+
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
+        }
+
+        public async Task<bool> DeleteTicketState(string id)
+        {
+            var ticketState = await _unitOfWork.TicketStateRepository.GetById(id);
+
+            if (ticketState is null)
+                throw new EntityNotFoundException("The ticket state you are deleting does not exist.");
+
+            _unitOfWork.TicketStateRepository.Delete(ticketState);
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
+        }
     }
 }

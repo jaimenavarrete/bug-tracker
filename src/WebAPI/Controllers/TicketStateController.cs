@@ -59,5 +59,28 @@ namespace WebAPI.Controllers
 
             return Ok(response);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTicketState(string id, TicketStateRequestDto ticketStateDto)
+        {
+            var ticketState = _mapper.Map<TicketState>(ticketStateDto);
+            ticketState.Id = id;
+
+            var result = await _ticketStateService.UpdateTicketState(ticketState);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTicketState(string id)
+        {
+            var result = await _ticketStateService.DeleteTicketState(id);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
+        }
     }
 }

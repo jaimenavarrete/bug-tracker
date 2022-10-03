@@ -59,5 +59,28 @@ namespace WebAPI.Controllers
 
             return Ok(response);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProjectState(string id, ProjectStateRequestDto projectStateDto)
+        {
+            var projectState = _mapper.Map<ProjectState>(projectStateDto);
+            projectState.Id = id;
+
+            var result = await _projectStateService.UpdateProjectState(projectState);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProject(string id)
+        {
+            var result = await _projectStateService.DeleteProjectState(id);
+
+            var response = new ApiResponse<bool>(result);
+
+            return Ok(response);
+        }
     }
 }

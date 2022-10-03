@@ -31,5 +31,37 @@ namespace Application.Services
 
             return await _unitOfWork.ProjectStateRepository.GetById(projectState.Id);
         }
+
+        public async Task<bool> UpdateProjectState(ProjectState projectState)
+        {
+            var userId = Guid.NewGuid().ToString();
+
+            var currentProjectState = await _unitOfWork.ProjectStateRepository.GetById(projectState.Id);
+
+            if (currentProjectState is null)
+                throw new EntityNotFoundException("The project state you are modifying does not exist.");
+
+            currentProjectState.Name = projectState.Name;
+            currentProjectState.GroupId = projectState.GroupId;
+            currentProjectState.ColorHexCode = projectState.ColorHexCode;
+            currentProjectState.UpdateModificationInfo(userId);
+
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
+        }
+
+        public async Task<bool> DeleteProjectState(string id)
+        {
+            var projectState = await _unitOfWork.ProjectStateRepository.GetById(id);
+
+            if (projectState is null)
+                throw new EntityNotFoundException("The project state you are deleting does not exist.");
+
+            _unitOfWork.ProjectStateRepository.Delete(projectState);
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result;
+        }
     }
 }
