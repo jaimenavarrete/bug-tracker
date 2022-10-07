@@ -26,14 +26,14 @@ namespace Infrastructure.Filters
             if (exceptionType.IsSubclassOf(typeof(BaseCustomException)))
             {
                 response.Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1";
-                response.Title = "Bad request";
                 response.Status = (int)HttpStatusCode.BadRequest;
+                response.Title = "Bad request";
             }
             else if(exceptionType == typeof(EntityNotFoundException))
             {
                 response.Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.4";
-                response.Title = "Not found";
                 response.Status = (int)HttpStatusCode.NotFound;
+                response.Title = "Not found";
             }
 
             context.HttpContext.Response.StatusCode = response.Status;

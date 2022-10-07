@@ -10,7 +10,6 @@ namespace Infrastructure.Mappings
         public GroupProfile()
         {
             CreateMap<Group, GroupMiniResponseDto>();
-
             CreateMap<Group, GroupResponseDto>();
             CreateMap<GroupRequestDto, Group>();
         }

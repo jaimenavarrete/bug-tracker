@@ -18,49 +18,40 @@ namespace Application.Services
 
         public async Task<Group?> GetGroupById(string id) => await _unitOfWork.GroupRepository.GetById(id);
 
-        public async Task<Group?> InsertGroup(Group group)
+        public async Task InsertGroup(Group group)
         {
             var userId = Guid.NewGuid().ToString();
             group.AddCreationInfo(userId);
 
             _unitOfWork.GroupRepository.Insert(group);
-            var result = await _unitOfWork.CompleteAsync();
-
-            if(!result)
-                throw new EntityNotFoundException("The group could not be created");
-
-            return group;
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> UpdateGroup(Group group)
+        public async Task UpdateGroup(Group group)
         {
             var userId = Guid.NewGuid().ToString();
 
             var currentGroup = await _unitOfWork.GroupRepository.GetById(group.Id);
 
             if (currentGroup is null)
-                throw new EntityNotFoundException("The group you are modifying does not exist.");
+                throw new EntityNotFoundException(nameof(Group), group.Id);
 
             currentGroup.Name = group.Name;
             currentGroup.Description = group.Description;
             currentGroup.UpdateModificationInfo(userId);
 
-            var result = await _unitOfWork.CompleteAsync();
-
-            return result;
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> DeleteGroup(string id)
+        public async Task DeleteGroup(string id)
         {
             var group = await _unitOfWork.GroupRepository.GetById(id);
 
             if (group is null)
-                throw new EntityNotFoundException("The group you are deleting does not exist.");
+                throw new EntityNotFoundException(nameof(Group), id);
 
             _unitOfWork.GroupRepository.Delete(group);
-            var result = await _unitOfWork.CompleteAsync();
-
-            return result;
+            await _unitOfWork.CompleteAsync();
         }
     }
 }

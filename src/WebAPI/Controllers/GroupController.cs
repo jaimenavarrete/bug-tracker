@@ -34,11 +34,12 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetGroups(string id)
+        public async Task<IActionResult> GetGroupById(string id)
         {
             var group = await _groupService.GetGroupById(id);
+
             if (group is null)
-                throw new EntityNotFoundException("The group you are looking for does not exist.");
+                throw new EntityNotFoundException(nameof(Group), id);
 
             var groupDto = _mapper.Map<GroupResponseDto>(group);
 
@@ -51,13 +52,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> InsertGroup(GroupRequestDto groupDto)
         {
             var group = _mapper.Map<Group>(groupDto);
-            group = await _groupService.InsertGroup(group);
+            await _groupService.InsertGroup(group);
 
-            var responseDto = _mapper.Map<GroupResponseDto>(group);
+            var responseDto = new MiniResponseDto(group.Id);
 
-            var response = new ApiResponse<GroupResponseDto>(responseDto);
+            var response = new ApiResponse<MiniResponseDto>(responseDto);
 
-            return Ok(response);
+            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{group?.Id}", response);
         }
 
         [HttpPut("{id}")]
@@ -66,21 +67,17 @@ namespace WebAPI.Controllers
             var group = _mapper.Map<Group>(groupDto);
             group.Id = id;
 
-            var result = await _groupService.UpdateGroup(group);
+            await _groupService.UpdateGroup(group);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(string id)
         {
-            var result = await _groupService.DeleteGroup(id);
+            await _groupService.DeleteGroup(id);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
     }
 }

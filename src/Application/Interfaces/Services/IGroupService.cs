@@ -8,10 +8,10 @@ namespace Application.Interfaces.Services
 
         Task<Group?> GetGroupById(string id);
 
-        Task<Group?> InsertGroup(Group project);
+        Task InsertGroup(Group project);
 
-        Task<bool> UpdateGroup(Group project);
+        Task UpdateGroup(Group project);
 
-        Task<bool> DeleteGroup(string id);
+        Task DeleteGroup(string id);
     }
 }
