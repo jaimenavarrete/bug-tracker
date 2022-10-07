@@ -37,8 +37,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetProjectById(string id)
         {
             var project = await _projectService.GetProjectById(id);
+            
             if (project is null)
-                throw new EntityNotFoundException("The project you are looking for does not exist.");
+                throw new EntityNotFoundException(nameof(Project), id);
 
             var projectDto = _mapper.Map<ProjectResponseDto>(project);
 
@@ -51,13 +52,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> InsertProject(ProjectRequestDto projectDto)
         {
             var project = _mapper.Map<Project>(projectDto);
-            project = await _projectService.InsertProject(project);
             
-            var responseDto = _mapper.Map<ProjectResponseDto>(project);
+            await _projectService.InsertProject(project);
+            
+            var responseDto = new MiniResponseDto(project.Id);
 
-            var response = new ApiResponse<ProjectResponseDto>(responseDto);
+            var response = new ApiResponse<MiniResponseDto>(responseDto);
 
-            return Ok(response);
+            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{project.Id}", response);
         }
 
         [HttpPut("{id}")]
@@ -66,21 +68,17 @@ namespace WebAPI.Controllers
             var project = _mapper.Map<Project>(projectDto);
             project.Id = id;
 
-            var result = await _projectService.UpdateProject(project);
+            await _projectService.UpdateProject(project);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(string id)
         {
-            var result = await _projectService.DeleteProject(id);
+            await _projectService.DeleteProject(id);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
     }
 }
