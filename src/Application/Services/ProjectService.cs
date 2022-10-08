@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetProjectsWithEntities();
+        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetProjectsWithAllEntities();
 
-        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetProjectWithEntitiesById(id);
+        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetProjectWithAllEntitiesById(id);
 
         public async Task InsertProject(Project project)
         {
@@ -33,7 +33,7 @@ namespace Application.Services
         {
             var userId = Guid.NewGuid().ToString();
             
-            var currentProject = await _unitOfWork.ProjectRepository.GetById(project.Id);
+            var currentProject = await _unitOfWork.ProjectRepository.GetProjectWithTagsById(project.Id);
 
             if (currentProject is null)
                 throw new EntityNotFoundException(nameof(Project), project.Id);
@@ -45,6 +45,7 @@ namespace Application.Services
             currentProject.TicketsPrefix = project.TicketsPrefix;
             currentProject.OwnerId = project.OwnerId;
             currentProject.StateId = project.StateId;
+            currentProject.Tags = project.Tags;
             currentProject.StartDate = project.StartDate;
             currentProject.CompletionDate = project.CompletionDate;
             currentProject.GroupId = project.GroupId;
@@ -76,6 +77,22 @@ namespace Application.Services
             var group = await _unitOfWork.GroupRepository.GetById(project.GroupId ?? string.Empty);
             if (group is null && project.GroupId is not null)
                 throw new EntityValueNotFoundException(nameof(Group), project.GroupId);
+
+            // Validate project tags
+            // The list is necessary to save the tags that are retrieved from database
+            var tags = new List<ProjectTag>();
+
+            foreach(var tag in project.Tags)
+            {
+                var projectTag = await _unitOfWork.ProjectTagRepository.GetById(tag.Id);
+                if (projectTag is null)
+                    throw new EntityValueNotFoundException(nameof(ProjectTag), tag.Id);
+
+                tags.Add(projectTag);
+            }
+
+            // Replace the list with incomplete project tags to be able to save the project in database
+            project.Tags = tags;
         }
     }
 }

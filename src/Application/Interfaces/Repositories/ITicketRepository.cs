@@ -5,9 +5,9 @@ namespace Application.Interfaces.Repositories
 {
     public interface ITicketRepository : IBaseRepository<Ticket>
     {
-        Task<IEnumerable<Ticket>> GetTicketsWithEntities();
+        Task<IEnumerable<Ticket>> GetTicketsWithAllEntities();
 
-        Task<Ticket?> GetTicketWithEntitiesById(string id);
+        Task<Ticket?> GetTicketWithAllEntitiesById(string id);
 
         Task<Ticket?> GetTicketWithTagsById(string id);
     }

@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetTicketsWithEntities();
+        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetTicketsWithAllEntities();
 
-        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithEntitiesById(id);
+        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithAllEntitiesById(id);
 
         public async Task InsertTicket(Ticket ticket)
         {

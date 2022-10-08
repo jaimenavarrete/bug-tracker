@@ -27,6 +27,10 @@ namespace Infrastructure.Validators
 
             RuleFor(project => project.GroupId)
                 .Length(36);
+
+            RuleForEach(project => project.AssignedTagsId)
+                .NotEmpty()
+                .Length(36);
         }
     }
 }
