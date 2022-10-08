@@ -31,7 +31,7 @@ namespace Application.Services
 
         public async Task UpdateTicket(Ticket ticket)
         {
-            var currentTicket = await _unitOfWork.TicketRepository.GetById(ticket.Id);
+            var currentTicket = await _unitOfWork.TicketRepository.GetTicketWithTagsById(ticket.Id);
 
             if (currentTicket is null)
                 throw new EntityNotFoundException(nameof(Ticket), ticket.Id);
@@ -42,6 +42,7 @@ namespace Application.Services
             currentTicket.Description = ticket.Description;
             currentTicket.SubmitterId = ticket.SubmitterId;
             currentTicket.StateId = ticket.StateId;
+            currentTicket.Tags = ticket.Tags;
             currentTicket.AssignedUserId = ticket.AssignedUserId;
             currentTicket.CompletionDate = ticket.CompletionDate;
             currentTicket.GravityId = ticket.GravityId;
@@ -75,6 +76,22 @@ namespace Application.Services
             var project = await _unitOfWork.ProjectRepository.GetById(ticket.ProjectId ?? string.Empty);
             if (project is null && ticket.ProjectId is not null)
                 throw new EntityValueNotFoundException(nameof(Project), ticket.ProjectId);
+
+            // Validate ticket tags
+            // The list is necessary to save the tags that are retrieved from database
+            var tags = new List<TicketTag>();
+
+            foreach (var tag in ticket.Tags)
+            {
+                var ticketTag = await _unitOfWork.TicketTagRepository.GetById(tag.Id);
+                if (ticketTag is null)
+                    throw new EntityValueNotFoundException(nameof(TicketTag), tag.Id);
+
+                tags.Add(ticketTag);
+            }
+
+            // Replace the list that has incomplete ticket tags to be able to save the project in database
+            ticket.Tags = tags;
         }
     }
 }

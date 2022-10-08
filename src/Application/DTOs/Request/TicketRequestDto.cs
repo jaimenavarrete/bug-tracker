@@ -2,6 +2,11 @@
 {
     public class TicketRequestDto
     {
+        public TicketRequestDto()
+        {
+            AssignedTagsId = Enumerable.Empty<string>();
+        }
+
         public string Name { get; set; } = null!;
 
         public string? Description { get; set; }
@@ -9,6 +14,8 @@
         public string SubmitterId { get; set; } = null!;
 
         public string StateId { get; set; } = null!;
+
+        public IEnumerable<string> AssignedTagsId { get; set; }
 
         public string? AssignedUserId { get; set; }
 

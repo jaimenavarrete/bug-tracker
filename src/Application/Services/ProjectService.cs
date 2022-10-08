@@ -82,7 +82,7 @@ namespace Application.Services
             // The list is necessary to save the tags that are retrieved from database
             var tags = new List<ProjectTag>();
 
-            foreach(var tag in project.Tags)
+            foreach (var tag in project.Tags)
             {
                 var projectTag = await _unitOfWork.ProjectTagRepository.GetById(tag.Id);
                 if (projectTag is null)
@@ -91,7 +91,7 @@ namespace Application.Services
                 tags.Add(projectTag);
             }
 
-            // Replace the list with incomplete project tags to be able to save the project in database
+            // Replace the list that has incomplete project tags to be able to save the project in database
             project.Tags = tags;
         }
     }

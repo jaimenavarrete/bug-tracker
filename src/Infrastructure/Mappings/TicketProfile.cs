@@ -9,8 +9,11 @@ namespace Infrastructure.Mappings
     {
         public TicketProfile()
         {
-            CreateMap<Ticket, TicketResponseDto>();
-            CreateMap<TicketRequestDto, Ticket>();
+            CreateMap<Ticket, TicketResponseDto>()
+                .ForMember(dest => dest.AssignedTags, opt => opt.MapFrom(src => src.Tags));
+            CreateMap<TicketRequestDto, Ticket>()
+                .ForMember(dest => dest.Tags,
+                    opt => opt.MapFrom(src => src.AssignedTagsId.Select(tag => new TicketTag { Id = tag })));
         }
     }
 }

@@ -25,6 +25,10 @@ namespace Infrastructure.Validators
             RuleFor(ticket => ticket.ProjectId)
                 .NotEmpty()
                 .Length(36);
+
+            RuleForEach(ticket => ticket.AssignedTagsId)
+                .NotEmpty()
+                .Length(36);
         }
     }
 }
