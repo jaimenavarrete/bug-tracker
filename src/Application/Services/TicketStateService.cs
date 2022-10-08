@@ -18,50 +18,52 @@ namespace Application.Services
 
         public async Task<TicketState?> GetTicketStateById(string id) => await _unitOfWork.TicketStateRepository.GetById(id);
 
-        public async Task<TicketState?> InsertTicketState(TicketState ticketState)
+        public async Task InsertTicketState(TicketState ticketState)
         {
             var userId = Guid.NewGuid().ToString();
             ticketState.AddCreationInfo(userId);
 
+            await ValidateEntityValues(ticketState);
+
             _unitOfWork.TicketStateRepository.Insert(ticketState);
-            var result = await _unitOfWork.CompleteAsync();
-
-            if (!result)
-                throw new EntityNotFoundException("The ticket state could not be created");
-
-            return await _unitOfWork.TicketStateRepository.GetById(ticketState.Id);
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> UpdateTicketState(TicketState ticketState)
+        public async Task UpdateTicketState(TicketState ticketState)
         {
             var userId = Guid.NewGuid().ToString();
 
             var currentTicketState = await _unitOfWork.TicketStateRepository.GetById(ticketState.Id);
 
             if (currentTicketState is null)
-                throw new EntityNotFoundException("The ticket state you are modifying does not exist.");
+                throw new EntityNotFoundException(nameof(TicketState), ticketState.Id);
+
+            await ValidateEntityValues(ticketState);
 
             currentTicketState.Name = ticketState.Name;
             currentTicketState.ProjectId = ticketState.ProjectId;
             currentTicketState.ColorHexCode = ticketState.ColorHexCode;
             currentTicketState.UpdateModificationInfo(userId);
 
-            var result = await _unitOfWork.CompleteAsync();
-
-            return result;
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> DeleteTicketState(string id)
+        public async Task DeleteTicketState(string id)
         {
             var ticketState = await _unitOfWork.TicketStateRepository.GetById(id);
 
             if (ticketState is null)
-                throw new EntityNotFoundException("The ticket state you are deleting does not exist.");
+                throw new EntityNotFoundException(nameof(TicketState), id);
 
             _unitOfWork.TicketStateRepository.Delete(ticketState);
-            var result = await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync();
+        }
 
-            return result;
+        private async Task ValidateEntityValues(TicketState ticketState)
+        {
+            var project = await _unitOfWork.ProjectRepository.GetById(ticketState.ProjectId);
+            if (project is null)
+                throw new EntityValueNotFoundException(nameof(Project), ticketState.ProjectId);
         }
     }
 }

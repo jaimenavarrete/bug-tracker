@@ -70,11 +70,10 @@ namespace Application.Services
         private async Task ValidateEntityValues(Project project)
         {
             var state = await _unitOfWork.ProjectStateRepository.GetById(project.StateId);
-            var group = await _unitOfWork.GroupRepository.GetById(project.GroupId ?? string.Empty);
-
             if (state is null)
                 throw new EntityValueNotFoundException(nameof(ProjectState), project.StateId);
 
+            var group = await _unitOfWork.GroupRepository.GetById(project.GroupId ?? string.Empty);
             if (group is null && project.GroupId is not null)
                 throw new EntityValueNotFoundException(nameof(Group), project.GroupId);
         }

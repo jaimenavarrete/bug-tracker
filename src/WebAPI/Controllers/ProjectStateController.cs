@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
         {
             var projectState = await _projectStateService.GetProjectStateById(id);
             if (projectState is null)
-                throw new EntityNotFoundException("The project state you are looking for does not exist.");
+                throw new EntityNotFoundException(nameof(ProjectState), id);
 
             var projectStateDto = _mapper.Map<ProjectStateResponseDto>(projectState);
 
@@ -51,13 +51,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> InsertProjectState(ProjectStateRequestDto projectStateRequestDto)
         {
             var projectState = _mapper.Map<ProjectState>(projectStateRequestDto);
-            projectState = await _projectStateService.InsertProjectState(projectState);
+            await _projectStateService.InsertProjectState(projectState);
 
-            var responseDto = _mapper.Map<ProjectStateResponseDto>(projectState);
+            var responseDto = new MiniResponseDto(projectState.Id);
 
-            var response = new ApiResponse<ProjectStateResponseDto>(responseDto);
+            var response = new ApiResponse<MiniResponseDto>(responseDto);
 
-            return Ok(response);
+            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{projectState.Id}", response);
         }
 
         [HttpPut("{id}")]
@@ -66,21 +66,17 @@ namespace WebAPI.Controllers
             var projectState = _mapper.Map<ProjectState>(projectStateDto);
             projectState.Id = id;
 
-            var result = await _projectStateService.UpdateProjectState(projectState);
+            await _projectStateService.UpdateProjectState(projectState);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(string id)
         {
-            var result = await _projectStateService.DeleteProjectState(id);
+            await _projectStateService.DeleteProjectState(id);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
     }
 }

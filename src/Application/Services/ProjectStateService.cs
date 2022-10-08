@@ -18,50 +18,52 @@ namespace Application.Services
 
         public async Task<ProjectState?> GetProjectStateById(string id) => await _unitOfWork.ProjectStateRepository.GetById(id);
 
-        public async Task<ProjectState?> InsertProjectState(ProjectState projectState)
+        public async Task InsertProjectState(ProjectState projectState)
         {
             var userId = Guid.NewGuid().ToString();
             projectState.AddCreationInfo(userId);
 
+            await ValidateEntityValues(projectState);
+
             _unitOfWork.ProjectStateRepository.Insert(projectState);
-            var result = await _unitOfWork.CompleteAsync();
-
-            if(!result)
-                throw new EntityNotFoundException("The project state could not be created");
-
-            return await _unitOfWork.ProjectStateRepository.GetById(projectState.Id);
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> UpdateProjectState(ProjectState projectState)
+        public async Task UpdateProjectState(ProjectState projectState)
         {
             var userId = Guid.NewGuid().ToString();
 
             var currentProjectState = await _unitOfWork.ProjectStateRepository.GetById(projectState.Id);
 
             if (currentProjectState is null)
-                throw new EntityNotFoundException("The project state you are modifying does not exist.");
+                throw new EntityNotFoundException(nameof(ProjectState), projectState.Id);
+
+            await ValidateEntityValues(projectState);
 
             currentProjectState.Name = projectState.Name;
             currentProjectState.GroupId = projectState.GroupId;
             currentProjectState.ColorHexCode = projectState.ColorHexCode;
             currentProjectState.UpdateModificationInfo(userId);
 
-            var result = await _unitOfWork.CompleteAsync();
-
-            return result;
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> DeleteProjectState(string id)
+        public async Task DeleteProjectState(string id)
         {
             var projectState = await _unitOfWork.ProjectStateRepository.GetById(id);
 
             if (projectState is null)
-                throw new EntityNotFoundException("The project state you are deleting does not exist.");
+                throw new EntityNotFoundException(nameof(ProjectState), id);
 
             _unitOfWork.ProjectStateRepository.Delete(projectState);
-            var result = await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync();
+        }
 
-            return result;
+        private async Task ValidateEntityValues(ProjectState projectState)
+        {
+            var group = await _unitOfWork.GroupRepository.GetById(projectState.GroupId);
+            if(group is null)
+                throw new EntityValueNotFoundException(nameof(Group), projectState.GroupId);
         }
     }
 }

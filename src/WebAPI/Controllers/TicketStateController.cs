@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
         {
             var ticketState = await _ticketStateService.GetTicketStateById(id);
             if (ticketState is null)
-                throw new EntityNotFoundException("The ticket state you are looking for does not exist.");
+                throw new EntityNotFoundException(nameof(TicketState), id);
 
             var ticketStateDto = _mapper.Map<TicketStateResponseDto>(ticketState);
 
@@ -51,11 +51,11 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> InsertTicketState(TicketStateRequestDto ticketStateRequestDto)
         {
             var ticketState = _mapper.Map<TicketState>(ticketStateRequestDto);
-            ticketState = await _ticketStateService.InsertTicketState(ticketState);
+            await _ticketStateService.InsertTicketState(ticketState);
 
-            var responseDto = _mapper.Map<TicketStateResponseDto>(ticketState);
+            var responseDto = new MiniResponseDto(ticketState.Id);
 
-            var response = new ApiResponse<TicketStateResponseDto>(responseDto);
+            var response = new ApiResponse<MiniResponseDto>(responseDto);
 
             return Ok(response);
         }
@@ -66,21 +66,17 @@ namespace WebAPI.Controllers
             var ticketState = _mapper.Map<TicketState>(ticketStateDto);
             ticketState.Id = id;
 
-            var result = await _ticketStateService.UpdateTicketState(ticketState);
+            await _ticketStateService.UpdateTicketState(ticketState);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicketState(string id)
         {
-            var result = await _ticketStateService.DeleteTicketState(id);
+            await _ticketStateService.DeleteTicketState(id);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
     }
 }
