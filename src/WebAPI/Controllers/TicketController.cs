@@ -3,6 +3,7 @@ using Application.DTOs.Response;
 using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Responses;
 
@@ -33,9 +34,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTickets(string id)
+        public async Task<IActionResult> GetTicketById(string id)
         {
             var ticket = await _ticketService.GetTicketById(id);
+            
+            if (ticket is null)
+                throw new EntityNotFoundException(nameof(Ticket), id);
+
             var ticketDto = _mapper.Map<TicketResponseDto>(ticket);
 
             var response = new ApiResponse<TicketResponseDto>(ticketDto);
@@ -47,13 +52,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> InsertTicket(TicketRequestDto ticketDto)
         {
             var ticket = _mapper.Map<Ticket>(ticketDto);
-            ticket = await _ticketService.InsertTicket(ticket);
+            await _ticketService.InsertTicket(ticket);
 
-            var responseDto = _mapper.Map<TicketResponseDto>(ticket);
+            var responseDto = new MiniResponseDto(ticket.Id);
 
-            var response = new ApiResponse<TicketResponseDto>(responseDto);
+            var response = new ApiResponse<MiniResponseDto>(responseDto);
 
-            return Ok(response);
+            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{ticket.Id}", response);
         }
 
         [HttpPut("{id}")]
@@ -62,21 +67,17 @@ namespace WebAPI.Controllers
             var ticket = _mapper.Map<Ticket>(ticketDto);
             ticket.Id = id;
 
-            var result = await _ticketService.UpdateTicket(ticket);
+            await _ticketService.UpdateTicket(ticket);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicket(string id)
         {
-            var result = await _ticketService.DeleteTicket(id);
+            await _ticketService.DeleteTicket(id);
 
-            var response = new ApiResponse<bool>(result);
-
-            return Ok(response);
+            return NoContent();
         }
     }
 }

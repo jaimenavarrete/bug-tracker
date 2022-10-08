@@ -18,26 +18,25 @@ namespace Application.Services
 
         public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithEntitiesById(id);
 
-        public async Task<Ticket> InsertTicket(Ticket ticket)
+        public async Task InsertTicket(Ticket ticket)
         {
             var userId = Guid.NewGuid().ToString();
             ticket.AddCreationInfo(userId);
 
+            await ValidateEntityValues(ticket);
+
             _unitOfWork.TicketRepository.Insert(ticket);
-            var result = await _unitOfWork.CompleteAsync();
-
-            if(!result)
-                throw new EntityNotFoundException("The ticket could not be created.");
-
-            return await _unitOfWork.TicketRepository.GetTicketWithEntitiesById(ticket.Id) ?? ticket;
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> UpdateTicket(Ticket ticket)
+        public async Task UpdateTicket(Ticket ticket)
         {
             var currentTicket = await _unitOfWork.TicketRepository.GetById(ticket.Id);
 
             if (currentTicket is null)
-                throw new EntityNotFoundException("The ticket you are modifying does not exist.");
+                throw new EntityNotFoundException(nameof(Ticket), ticket.Id);
+
+            await ValidateEntityValues(ticket);
 
             currentTicket.Name = ticket.Name;
             currentTicket.Description = ticket.Description;
@@ -50,25 +49,32 @@ namespace Application.Services
             currentTicket.ClassificationId = ticket.ClassificationId;
             currentTicket.ProjectId = ticket.ProjectId;
 
-            var result = await _unitOfWork.CompleteAsync();
-
-            return result;
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> DeleteTicket(string id)
+        public async Task DeleteTicket(string id)
         {
             var ticket = await _unitOfWork.TicketRepository.GetTicketWithTagsById(id);
 
             if (ticket is null)
-                throw new EntityNotFoundException("The ticket you are deleting does not exist.");
+                throw new EntityNotFoundException(nameof(Ticket), id);
 
             // Remove the tags assigned to this ticket
             ticket.Tags = Enumerable.Empty<TicketTag>();
 
             _unitOfWork.TicketRepository.Delete(ticket);
-            var result = await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync();
+        }
 
-            return result;
+        private async Task ValidateEntityValues(Ticket ticket)
+        {
+            var state = await _unitOfWork.TicketStateRepository.GetById(ticket.StateId);
+            if (state is null)
+                throw new EntityValueNotFoundException(nameof(TicketState), ticket.StateId);
+
+            var project = await _unitOfWork.ProjectRepository.GetById(ticket.ProjectId ?? string.Empty);
+            if (project is null && ticket.ProjectId is not null)
+                throw new EntityValueNotFoundException(nameof(Project), ticket.ProjectId);
         }
     }
 }
