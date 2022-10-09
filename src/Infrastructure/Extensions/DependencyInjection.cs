@@ -18,8 +18,9 @@ namespace Infrastructure.Extensions
             // Services
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IProjectService, ProjectService>();
-            services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<IProjectStateService, ProjectStateService>();
+            services.AddTransient<IProjectTagService, ProjectTagService>();
+            services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<ITicketStateService, TicketStateService>();
 
             return services;

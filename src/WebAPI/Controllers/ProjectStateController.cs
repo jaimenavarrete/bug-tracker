@@ -72,7 +72,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProject(string id)
+        public async Task<IActionResult> DeleteProjectState(string id)
         {
             await _projectStateService.DeleteProjectState(id);
 
