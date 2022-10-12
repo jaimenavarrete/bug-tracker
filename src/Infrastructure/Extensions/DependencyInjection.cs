@@ -22,6 +22,7 @@ namespace Infrastructure.Extensions
             services.AddTransient<IProjectTagService, ProjectTagService>();
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<ITicketStateService, TicketStateService>();
+            services.AddTransient<ITicketTagService, TicketTagService>();
 
             return services;
         }

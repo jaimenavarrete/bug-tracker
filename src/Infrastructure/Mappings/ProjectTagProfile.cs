@@ -12,8 +12,6 @@ namespace Infrastructure.Mappings
             CreateMap<ProjectTag, TagMiniResponseDto>();
             CreateMap<ProjectTag, ProjectTagResponseDto>();
             CreateMap<ProjectTagRequestDto, ProjectTag>();
-
-            CreateMap<TicketTag, TagMiniResponseDto>();
         }
     }
 }
