@@ -15,9 +15,12 @@ namespace Infrastructure.Persistence
         {
         }
 
+        public virtual DbSet<ActionType> ActionTypes { get; set; } = null!;
+        public virtual DbSet<ActivityFlow> ActivityFlows { get; set; } = null!;
         public virtual DbSet<Classification> Classifications { get; set; } = null!;
         public virtual DbSet<GravityLevel> GravityLevels { get; set; } = null!;
         public virtual DbSet<Group> Groups { get; set; } = null!;
+        public virtual DbSet<ItemType> ItemTypes { get; set; } = null!;
         public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<ProjectState> ProjectStates { get; set; } = null!;
         public virtual DbSet<ProjectTag> ProjectTags { get; set; } = null!;
@@ -28,6 +31,8 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ActivityFlowConfiguration());
+
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
 
             modelBuilder.ApplyConfiguration(new ProjectConfiguration());
@@ -42,25 +47,33 @@ namespace Infrastructure.Persistence
 
             modelBuilder.ApplyConfiguration(new TicketTagConfiguration());
 
+            modelBuilder.Entity<ItemType>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).HasMaxLength(25);
+            });
+
+            modelBuilder.Entity<ActionType>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).HasMaxLength(25);
+            });
 
             modelBuilder.Entity<Classification>(entity =>
             {
                 entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Name).HasMaxLength(25);
             });
 
             modelBuilder.Entity<GravityLevel>(entity =>
             {
                 entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Name).HasMaxLength(25);
             });
 
             modelBuilder.Entity<ReproducibilityLevel>(entity =>
             {
                 entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Name).HasMaxLength(25);
             });
 

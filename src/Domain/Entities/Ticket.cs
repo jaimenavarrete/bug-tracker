@@ -27,14 +27,14 @@ namespace Domain.Entities
 
         public int? ClassificationId { get; set; }
 
-        public string? ProjectId { get; set; }
+        public string ProjectId { get; set; } = null!;
 
 
         public Classification? Classification { get; set; }
 
         public GravityLevel? Gravity { get; set; }
 
-        public Project? Project { get; set; }
+        public Project Project { get; set; } = null!;
 
         public ReproducibilityLevel? Reproducibility { get; set; }
 

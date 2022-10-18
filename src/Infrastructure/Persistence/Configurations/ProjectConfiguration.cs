@@ -27,8 +27,6 @@ namespace Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(36);
 
-            builder.Property(e => e.TicketsAmount).IsRequired();
-
             builder.Property(e => e.StartDate).HasColumnType("datetime");
 
             builder.Property(e => e.CompletionDate).HasColumnType("datetime");

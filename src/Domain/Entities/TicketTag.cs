@@ -11,12 +11,12 @@ namespace Domain.Entities
 
         public string Name { get; set; } = null!;
 
-        public string? ProjectId { get; set; }
+        public string ProjectId { get; set; } = null!;
 
         public string ColorHexCode { get; set; } = null!;
 
 
-        public Project? Project { get; set; }
+        public Project Project { get; set; } = null!;
 
         public IEnumerable<Ticket> Tickets { get; set; }
     }
