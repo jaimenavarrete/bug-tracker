@@ -25,7 +25,7 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasOne(d => d.Project)
                 .WithMany(p => p.TicketStates)
                 .HasForeignKey(d => d.ProjectId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Projects_TicketStates");
         }
     }

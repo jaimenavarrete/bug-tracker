@@ -46,28 +46,29 @@ namespace Infrastructure.Persistence.Configurations
                 .HasForeignKey(d => d.GravityId)
                 .HasConstraintName("FK_GravityLevels_Tickets");
 
-            builder.HasOne(d => d.Project)
-                .WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.ProjectId)
-                .HasConstraintName("FK_Projects_Tickets");
-
             builder.HasOne(d => d.Reproducibility)
                 .WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.ReproducibilityId)
                 .HasConstraintName("FK_ReproducibilityLevels_Tickets");
 
+            builder.HasOne(d => d.Project)
+                .WithMany(p => p.Tickets)
+                .HasForeignKey(d => d.ProjectId)
+                .OnDelete(DeleteBehavior.ClientCascade)
+                .HasConstraintName("FK_Projects_Tickets");
+
             builder.HasOne(d => d.State)
                 .WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.StateId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_TicketsStates_Tickets");
 
             builder.HasMany(d => d.Tags)
                 .WithMany(p => p.Tickets)
                 .UsingEntity<Dictionary<string, object>>(
                     "TicketTagsAssignment",
-                    l => l.HasOne<TicketTag>().WithMany().HasForeignKey("TagId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_TicketTags_TicketTagsAssignment"),
-                    r => r.HasOne<Ticket>().WithMany().HasForeignKey("TicketId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Tickets_TicketTagsAssignment"),
+                    l => l.HasOne<TicketTag>().WithMany().HasForeignKey("TagId").OnDelete(DeleteBehavior.ClientCascade).HasConstraintName("FK_TicketTags_TicketTagsAssignment"),
+                    r => r.HasOne<Ticket>().WithMany().HasForeignKey("TicketId").OnDelete(DeleteBehavior.ClientCascade).HasConstraintName("FK_Tickets_TicketTagsAssignment"),
                     j =>
                     {
                         j.HasKey("TicketId", "TagId");

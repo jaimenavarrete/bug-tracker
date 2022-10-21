@@ -25,6 +25,7 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasOne(d => d.Group)
                 .WithMany(p => p.ProjectTags)
                 .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Groups_ProjectTags");
         }
     }

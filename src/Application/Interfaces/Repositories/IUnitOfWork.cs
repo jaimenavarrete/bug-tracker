@@ -5,7 +5,7 @@ namespace Application.Interfaces.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        IBaseRepository<Group> GroupRepository { get; }
+        IGroupRepository GroupRepository { get; }
 
         IProjectRepository ProjectRepository { get; }
 

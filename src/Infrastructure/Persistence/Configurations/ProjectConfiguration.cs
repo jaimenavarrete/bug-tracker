@@ -41,20 +41,21 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasOne(d => d.Group)
                 .WithMany(p => p.Projects)
                 .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Groups_Projects");
 
             builder.HasOne(d => d.State)
                 .WithMany(p => p.Projects)
                 .HasForeignKey(d => d.StateId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_ProjectStates_Projects");
 
             builder.HasMany(d => d.Tags)
                 .WithMany(p => p.Projects)
                 .UsingEntity<Dictionary<string, object>>(
                     "ProjectTagsAssignment",
-                    l => l.HasOne<ProjectTag>().WithMany().HasForeignKey("TagId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_ProjectTags_ProjectTagsAssignment"),
-                    r => r.HasOne<Project>().WithMany().HasForeignKey("ProjectId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Projects_ProjectTagsAssignment"),
+                    l => l.HasOne<ProjectTag>().WithMany().HasForeignKey("TagId").OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_ProjectTags_ProjectTagsAssignment"),
+                    r => r.HasOne<Project>().WithMany().HasForeignKey("ProjectId").OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_Projects_ProjectTagsAssignment"),
                     j =>
                     {
                         j.HasKey("ProjectId", "TagId");

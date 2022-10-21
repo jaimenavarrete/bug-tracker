@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetProjectsWithAllEntities();
+        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetProjectsWithRelevantData();
 
-        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetProjectWithAllEntitiesById(id);
+        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetProjectWithRelevantDataById(id);
 
         public async Task InsertProject(Project project)
         {
@@ -56,13 +56,10 @@ namespace Application.Services
 
         public async Task DeleteProject(string id)
         {
-            var project = await _unitOfWork.ProjectRepository.GetProjectWithTagsById(id);
+            var project = await _unitOfWork.ProjectRepository.GetProjectWithChildrenById(id);
 
             if (project is null)
                 throw new EntityNotFoundException(nameof(Project), id);
-
-            // Remove the tags assigned to this project
-            project.Tags = Enumerable.Empty<ProjectTag>();
 
             _unitOfWork.ProjectRepository.Delete(project);
             await _unitOfWork.CompleteAsync();

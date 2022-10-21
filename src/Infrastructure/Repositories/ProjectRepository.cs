@@ -12,14 +12,26 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public async Task<IEnumerable<Project>> GetProjectsWithAllEntities() =>
+        public async Task<IEnumerable<Project>> GetProjectsWithRelevantData() =>
             await GetProjectsWithAllEntitiesQuery().ToListAsync() ?? Enumerable.Empty<Project>();
 
-        public async Task<Project?> GetProjectWithAllEntitiesById(string id) =>
+        public async Task<Project?> GetProjectWithRelevantDataById(string id) =>
             await GetProjectsWithAllEntitiesQuery().FirstOrDefaultAsync(p => p.Id == id);
 
         public async Task<Project?> GetProjectWithTagsById(string id) =>
             await _entity.Include(t => t.Tags).FirstOrDefaultAsync(p => p.Id == id);
+
+        public async Task<Project?> GetProjectWithChildrenById(string id) =>
+            await _entity.Include(p => p.Tags)
+                .Include(p => p.TicketTags)
+                    .ThenInclude(tt => tt.Tickets)
+                        .ThenInclude(t => t.Tags)
+                .Include(p => p.TicketStates)
+                    .ThenInclude(ts => ts.Tickets)
+                        .ThenInclude(t => t.Tags)
+                .Include(p => p.Tickets)
+                    .ThenInclude(t => t.Tags)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
         private IQueryable<Project> GetProjectsWithAllEntitiesQuery()
         {

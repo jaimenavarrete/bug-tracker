@@ -5,10 +5,12 @@ namespace Application.Interfaces.Repositories
 {
     public interface IProjectRepository : IBaseRepository<Project>
     {
-        Task<IEnumerable<Project>> GetProjectsWithAllEntities();
+        Task<IEnumerable<Project>> GetProjectsWithRelevantData();
 
-        Task<Project?> GetProjectWithAllEntitiesById(string id);
+        Task<Project?> GetProjectWithRelevantDataById(string id);
 
         Task<Project?> GetProjectWithTagsById(string id);
+
+        Task<Project?> GetProjectWithChildrenById(string id);
     }
 }
