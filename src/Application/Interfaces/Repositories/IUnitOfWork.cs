@@ -11,13 +11,13 @@ namespace Application.Interfaces.Repositories
 
         IBaseRepository<ProjectState> ProjectStateRepository { get; }
 
-        IBaseRepository<ProjectTag> ProjectTagRepository { get; }
+        IProjectTagRepository ProjectTagRepository { get; }
 
         ITicketRepository TicketRepository { get; }
 
         IBaseRepository<TicketState> TicketStateRepository { get; }
 
-        IBaseRepository<TicketTag> TicketTagRepository { get; }
+        ITicketTagRepository TicketTagRepository { get; }
 
         bool Complete();
 

@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetTicketsWithAllEntities();
+        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetTicketsWithRelevantData();
 
-        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithAllEntitiesById(id);
+        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithRelevantDataById(id);
 
         public async Task InsertTicket(Ticket ticket)
         {
@@ -55,13 +55,10 @@ namespace Application.Services
 
         public async Task DeleteTicket(string id)
         {
-            var ticket = await _unitOfWork.TicketRepository.GetTicketWithTagsById(id);
+            var ticket = await _unitOfWork.TicketRepository.GetTicketWithChildrenById(id);
 
             if (ticket is null)
                 throw new EntityNotFoundException(nameof(Ticket), id);
-
-            // Remove the tags assigned to this ticket
-            ticket.Tags = Enumerable.Empty<TicketTag>();
 
             _unitOfWork.TicketRepository.Delete(ticket);
             await _unitOfWork.CompleteAsync();

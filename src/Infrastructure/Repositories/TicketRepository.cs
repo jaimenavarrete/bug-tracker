@@ -12,13 +12,16 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsWithAllEntities() => 
+        public async Task<IEnumerable<Ticket>> GetTicketsWithRelevantData() => 
             await GetTicketsWithEntitiesQuery().ToListAsync() ?? Enumerable.Empty<Ticket>();
 
-        public async Task<Ticket?> GetTicketWithAllEntitiesById(string id) => 
+        public async Task<Ticket?> GetTicketWithRelevantDataById(string id) => 
             await GetTicketsWithEntitiesQuery().FirstOrDefaultAsync(t => t.Id == id);
 
         public async Task<Ticket?> GetTicketWithTagsById(string id) =>
+            await _entity.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == id);
+
+        public async Task<Ticket?> GetTicketWithChildrenById(string id) =>
             await _entity.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == id);
 
         private IQueryable<Ticket> GetTicketsWithEntitiesQuery()

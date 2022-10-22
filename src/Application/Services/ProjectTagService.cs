@@ -50,7 +50,7 @@ namespace Application.Services
 
         public async Task DeleteProjectTag(string id)
         {
-            var projectTag = await _unitOfWork.ProjectTagRepository.GetById(id);
+            var projectTag = await _unitOfWork.ProjectTagRepository.GetProjectTagToDeleteById(id);
 
             if (projectTag is null)
                 throw new EntityNotFoundException(nameof(ProjectTag), id);
