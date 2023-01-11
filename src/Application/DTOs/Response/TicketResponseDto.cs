@@ -25,5 +25,7 @@ namespace Application.DTOs.Response
         public string? ProjectId { get; set; }
 
         public IEnumerable<TagMiniResponseDto> AssignedTags { get; set; } = null!;
+
+        public bool IsCompleted { get; set; }
     }
 }

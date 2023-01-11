@@ -6,6 +6,8 @@ namespace Domain.Entities
     {
         public Ticket()
         {
+            IsCompleted = false;
+
             Tags = new HashSet<TicketTag>();
         }
 
@@ -28,6 +30,8 @@ namespace Domain.Entities
         public int? ClassificationId { get; set; }
 
         public string ProjectId { get; set; } = null!;
+
+        public bool IsCompleted { get; set; }
 
 
         public Classification? Classification { get; set; }

@@ -17,10 +17,10 @@ namespace Infrastructure.Persistence
 
         public virtual DbSet<ActionType> ActionTypes { get; set; } = null!;
         public virtual DbSet<ActivityFlow> ActivityFlows { get; set; } = null!;
+        public virtual DbSet<ItemType> ItemTypes { get; set; } = null!;
         public virtual DbSet<Classification> Classifications { get; set; } = null!;
         public virtual DbSet<GravityLevel> GravityLevels { get; set; } = null!;
         public virtual DbSet<Group> Groups { get; set; } = null!;
-        public virtual DbSet<ItemType> ItemTypes { get; set; } = null!;
         public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<ProjectState> ProjectStates { get; set; } = null!;
         public virtual DbSet<ProjectTag> ProjectTags { get; set; } = null!;

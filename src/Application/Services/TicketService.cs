@@ -49,6 +49,7 @@ namespace Application.Services
             currentTicket.ReproducibilityId = ticket.ReproducibilityId;
             currentTicket.ClassificationId = ticket.ClassificationId;
             currentTicket.ProjectId = ticket.ProjectId;
+            currentTicket.IsCompleted = ticket.IsCompleted;
 
             await _unitOfWork.CompleteAsync();
         }

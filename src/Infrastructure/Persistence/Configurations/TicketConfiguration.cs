@@ -30,6 +30,8 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(e => e.ClassificationId).HasColumnType("int");
 
             builder.Property(e => e.ProjectId).HasMaxLength(36);
+
+            builder.Property(e => e.IsCompleted).HasColumnType("bit");
             
             ConfigureRelationships(builder);
         }
@@ -54,13 +56,13 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasOne(d => d.Project)
                 .WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.ProjectId)
-                .OnDelete(DeleteBehavior.ClientCascade)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Projects_Tickets");
 
             builder.HasOne(d => d.State)
                 .WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.StateId)
-                .OnDelete(DeleteBehavior.ClientCascade)
+                .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_TicketsStates_Tickets");
 
             builder.HasMany(d => d.Tags)
