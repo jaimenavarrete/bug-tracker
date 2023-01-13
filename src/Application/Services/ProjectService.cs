@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetProjectsWithRelevantData();
+        public async Task<IEnumerable<Project>> GetProjects() => await _unitOfWork.ProjectRepository.GetAll();
 
-        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetProjectWithRelevantDataById(id);
+        public async Task<Project?> GetProjectById(string id) => await _unitOfWork.ProjectRepository.GetById(id);
 
         public async Task InsertProject(Project project)
         {
@@ -33,7 +33,7 @@ namespace Application.Services
         {
             var userId = Guid.NewGuid().ToString();
             
-            var currentProject = await _unitOfWork.ProjectRepository.GetProjectWithTagsById(project.Id);
+            var currentProject = await _unitOfWork.ProjectRepository.GetById(project.Id);
 
             if (currentProject is null)
                 throw new EntityNotFoundException(nameof(Project), project.Id);
@@ -56,7 +56,7 @@ namespace Application.Services
 
         public async Task DeleteProject(string id)
         {
-            var project = await _unitOfWork.ProjectRepository.GetProjectWithChildrenById(id);
+            var project = await _unitOfWork.ProjectRepository.GetById(id);
 
             if (project is null)
                 throw new EntityNotFoundException(nameof(Project), id);

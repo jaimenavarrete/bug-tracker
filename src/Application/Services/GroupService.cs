@@ -45,7 +45,7 @@ namespace Application.Services
 
         public async Task DeleteGroup(string id)
         {
-            var group = await _unitOfWork.GroupRepository.GetGroupWithChildrenById(id);
+            var group = await _unitOfWork.GroupRepository.GetById(id);
 
             if (group is null)
                 throw new EntityNotFoundException(nameof(Group), id);

@@ -9,8 +9,8 @@ namespace Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly BugTrackerContext _context;
-        private readonly IGroupRepository _groupRepository = null!;
-        private readonly IProjectRepository _projectRepository = null!;
+        private readonly IBaseRepository<Group> _groupRepository = null!;
+        private readonly IBaseRepository<Project> _projectRepository = null!;
         private readonly ITicketRepository _ticketRepository = null!;
         private readonly IBaseRepository<ProjectState> _projectStateRepository = null!;
         private readonly IProjectTagRepository _projectTagRepository = null!;
@@ -22,9 +22,9 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public IGroupRepository GroupRepository => _groupRepository ?? new GroupRepository(_context);
+        public IBaseRepository<Group> GroupRepository => _groupRepository ?? new BaseRepository<Group>(_context);
 
-        public IProjectRepository ProjectRepository => _projectRepository ?? new ProjectRepository(_context);
+        public IBaseRepository<Project> ProjectRepository => _projectRepository ?? new ProjectRepository(_context);
 
         public IBaseRepository<ProjectState> ProjectStateRepository => _projectStateRepository ?? new BaseRepository<ProjectState>(_context);
 
