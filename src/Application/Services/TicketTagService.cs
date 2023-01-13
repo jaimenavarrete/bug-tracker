@@ -50,7 +50,7 @@ namespace Application.Services
 
         public async Task DeleteTicketTag(string id)
         {
-            var ticketTag = await _unitOfWork.TicketTagRepository.GetTicketTagToDeleteById(id);
+            var ticketTag = await _unitOfWork.TicketTagRepository.GetById(id);
 
             if (ticketTag is null)
                 throw new EntityNotFoundException(nameof(TicketTag), id);

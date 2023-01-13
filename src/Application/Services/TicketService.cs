@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetTicketsWithRelevantData();
+        public async Task<IEnumerable<Ticket>> GetTickets() => await _unitOfWork.TicketRepository.GetAll();
 
-        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetTicketWithRelevantDataById(id);
+        public async Task<Ticket?> GetTicketById(string id) => await _unitOfWork.TicketRepository.GetById(id);
 
         public async Task InsertTicket(Ticket ticket)
         {
@@ -31,7 +31,7 @@ namespace Application.Services
 
         public async Task UpdateTicket(Ticket ticket)
         {
-            var currentTicket = await _unitOfWork.TicketRepository.GetTicketWithTagsById(ticket.Id);
+            var currentTicket = await _unitOfWork.TicketRepository.GetById(ticket.Id);
 
             if (currentTicket is null)
                 throw new EntityNotFoundException(nameof(Ticket), ticket.Id);
@@ -56,7 +56,7 @@ namespace Application.Services
 
         public async Task DeleteTicket(string id)
         {
-            var ticket = await _unitOfWork.TicketRepository.GetTicketWithChildrenById(id);
+            var ticket = await _unitOfWork.TicketRepository.GetById(id);
 
             if (ticket is null)
                 throw new EntityNotFoundException(nameof(Ticket), id);
