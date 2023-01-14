@@ -67,13 +67,18 @@ namespace Application.Services
 
         private async Task ValidateEntityValues(Project project)
         {
+            var group = await _unitOfWork.GroupRepository.GetById(project.GroupId ?? string.Empty);
+
+            if (group is null && project.GroupId is not null)
+                throw new EntityValueNotFoundException(nameof(Group), project.GroupId);
+
             var state = await _unitOfWork.ProjectStateRepository.GetById(project.StateId);
+
             if (state is null)
                 throw new EntityValueNotFoundException(nameof(ProjectState), project.StateId);
 
-            var group = await _unitOfWork.GroupRepository.GetById(project.GroupId ?? string.Empty);
-            if (group is null && project.GroupId is not null)
-                throw new EntityValueNotFoundException(nameof(Group), project.GroupId);
+            if(state.GroupId != project.GroupId)
+                throw new InvalidEntityValueException(nameof(ProjectState), state.Id, nameof(Project), nameof(Group));
 
             // Validate project tags
             // The list is necessary to save the tags that are retrieved from database
@@ -82,8 +87,12 @@ namespace Application.Services
             foreach (var tag in project.Tags)
             {
                 var projectTag = await _unitOfWork.ProjectTagRepository.GetById(tag.Id);
+
                 if (projectTag is null)
                     throw new EntityValueNotFoundException(nameof(ProjectTag), tag.Id);
+
+                if (projectTag.GroupId != project.GroupId)
+                    throw new InvalidEntityValueException(nameof(ProjectTag), projectTag.Id, nameof(Project), nameof(Group));
 
                 tags.Add(projectTag);
             }
