@@ -67,13 +67,18 @@ namespace Application.Services
 
         private async Task ValidateEntityValues(Ticket ticket)
         {
+            var project = await _unitOfWork.ProjectRepository.GetById(ticket.ProjectId);
+
+            if (project is null)
+                throw new EntityValueNotFoundException(nameof(Project), ticket.ProjectId);
+
             var state = await _unitOfWork.TicketStateRepository.GetById(ticket.StateId);
+
             if (state is null)
                 throw new EntityValueNotFoundException(nameof(TicketState), ticket.StateId);
 
-            var project = await _unitOfWork.ProjectRepository.GetById(ticket.ProjectId ?? string.Empty);
-            if (project is null && ticket.ProjectId is not null)
-                throw new EntityValueNotFoundException(nameof(Project), ticket.ProjectId);
+            if (state.ProjectId != ticket.ProjectId)
+                throw new InvalidEntityValueException(nameof(TicketState), state.Id, nameof(Ticket), nameof(Project));
 
             // Validate ticket tags
             // The list is necessary to save the tags that are retrieved from database
@@ -82,8 +87,12 @@ namespace Application.Services
             foreach (var tag in ticket.Tags)
             {
                 var ticketTag = await _unitOfWork.TicketTagRepository.GetById(tag.Id);
+
                 if (ticketTag is null)
                     throw new EntityValueNotFoundException(nameof(TicketTag), tag.Id);
+
+                if (ticketTag.ProjectId != ticket.ProjectId)
+                    throw new InvalidEntityValueException(nameof(TicketTag), ticketTag.Id, nameof(Ticket), nameof(Project));
 
                 tags.Add(ticketTag);
             }
