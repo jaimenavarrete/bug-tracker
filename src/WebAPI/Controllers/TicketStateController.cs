@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
             var ticketState = _mapper.Map<TicketState>(ticketStateRequestDto);
             await _ticketStateService.InsertTicketState(ticketState);
 
-            var responseDto = new MiniResponseDto(ticketState.Id);
+            var responseDto = new CreationResponseDto(ticketState.Id);
 
-            var response = new ApiResponse<MiniResponseDto>(responseDto);
+            var response = new ApiResponse<CreationResponseDto>(responseDto);
 
             return Ok(response);
         }

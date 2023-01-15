@@ -54,9 +54,9 @@ namespace WebAPI.Controllers
             var ticketTag = _mapper.Map<TicketTag>(ticketTagRequestDto);
             await _ticketTagService.InsertTicketTag(ticketTag);
 
-            var responseDto = new MiniResponseDto(ticketTag.Id);
+            var responseDto = new CreationResponseDto(ticketTag.Id);
 
-            var response = new ApiResponse<MiniResponseDto>(responseDto);
+            var response = new ApiResponse<CreationResponseDto>(responseDto);
 
             return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{ticketTag.Id}", response);
         }

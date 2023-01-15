@@ -26,9 +26,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetGroups()
         {
             var groups = await _groupService.GetGroups();
-            var groupsDto = _mapper.Map<IEnumerable<GroupResponseDto>>(groups);
+            var groupsDto = _mapper.Map<IEnumerable<GroupMiniResponseDto>>(groups);
 
-            var response = new ApiResponse<IEnumerable<GroupResponseDto>>(groupsDto);
+            var response = new ApiResponse<IEnumerable<GroupMiniResponseDto>>(groupsDto);
 
             return Ok(response);
         }
@@ -54,9 +54,9 @@ namespace WebAPI.Controllers
             var group = _mapper.Map<Group>(groupDto);
             await _groupService.InsertGroup(group);
 
-            var responseDto = new MiniResponseDto(group.Id);
+            var responseDto = new CreationResponseDto(group.Id);
 
-            var response = new ApiResponse<MiniResponseDto>(responseDto);
+            var response = new ApiResponse<CreationResponseDto>(responseDto);
 
             return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{group?.Id}", response);
         }
@@ -73,7 +73,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProject(string id)
+        public async Task<IActionResult> DeleteGroup(string id)
         {
             await _groupService.DeleteGroup(id);
 

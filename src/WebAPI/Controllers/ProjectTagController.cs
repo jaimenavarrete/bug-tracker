@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
             var projectTag = _mapper.Map<ProjectTag>(projectTagRequestDto);
             await _projectTagService.InsertProjectTag(projectTag);
 
-            var responseDto = new MiniResponseDto(projectTag.Id);
+            var responseDto = new CreationResponseDto(projectTag.Id);
 
-            var response = new ApiResponse<MiniResponseDto>(responseDto);
+            var response = new ApiResponse<CreationResponseDto>(responseDto);
 
             return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{projectTag.Id}", response);
         }

@@ -54,9 +54,9 @@ namespace WebAPI.Controllers
             var ticket = _mapper.Map<Ticket>(ticketDto);
             await _ticketService.InsertTicket(ticket);
 
-            var responseDto = new MiniResponseDto(ticket.Id);
+            var responseDto = new CreationResponseDto(ticket.Id);
 
-            var response = new ApiResponse<MiniResponseDto>(responseDto);
+            var response = new ApiResponse<CreationResponseDto>(responseDto);
 
             return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{ticket.Id}", response);
         }

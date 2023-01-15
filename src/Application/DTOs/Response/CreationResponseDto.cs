@@ -1,8 +1,8 @@
 ﻿namespace Application.DTOs.Response
 {
-    public class MiniResponseDto
+    public class CreationResponseDto
     {
-        public MiniResponseDto(string id)
+        public CreationResponseDto(string id)
         {
             Id = id;
         }

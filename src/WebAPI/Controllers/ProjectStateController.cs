@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
             var projectState = _mapper.Map<ProjectState>(projectStateRequestDto);
             await _projectStateService.InsertProjectState(projectState);
 
-            var responseDto = new MiniResponseDto(projectState.Id);
+            var responseDto = new CreationResponseDto(projectState.Id);
 
-            var response = new ApiResponse<MiniResponseDto>(responseDto);
+            var response = new ApiResponse<CreationResponseDto>(responseDto);
 
             return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{projectState.Id}", response);
         }

@@ -26,9 +26,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetProjects()
         {
             var projects = await _projectService.GetProjects();
-            var projectsDto = _mapper.Map<IEnumerable<ProjectResponseDto>>(projects);
+            var projectsDto = _mapper.Map<IEnumerable<ProjectMiniResponseDto>>(projects);
 
-            var response = new ApiResponse<IEnumerable<ProjectResponseDto>>(projectsDto);
+            var response = new ApiResponse<IEnumerable<ProjectMiniResponseDto>>(projectsDto);
 
             return Ok(response);
         }
@@ -55,9 +55,9 @@ namespace WebAPI.Controllers
             
             await _projectService.InsertProject(project);
             
-            var responseDto = new MiniResponseDto(project.Id);
+            var responseDto = new CreationResponseDto(project.Id);
 
-            var response = new ApiResponse<MiniResponseDto>(responseDto);
+            var response = new ApiResponse<CreationResponseDto>(responseDto);
 
             return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{project.Id}", response);
         }
