@@ -10,7 +10,8 @@ namespace Infrastructure.Mappings
         public TicketTagProfile()
         {
             CreateMap<TicketTag, StateAndTagMiniResponseDto>();
-            CreateMap<TicketTag, TicketTagResponseDto>();
+            CreateMap<TicketTag, TicketStateAndTagMiniResponseDto>();
+            CreateMap<TicketTag, TicketStateAndTagResponseDto>();
             CreateMap<TicketTagRequestDto, TicketTag>();
         }
     }

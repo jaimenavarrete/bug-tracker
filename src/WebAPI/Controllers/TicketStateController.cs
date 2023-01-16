@@ -26,9 +26,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetTicketStates()
         {
             var ticketStates = await _ticketStateService.GetTicketStates();
-            var ticketStatesDto = _mapper.Map<IEnumerable<TicketStateResponseDto>>(ticketStates);
+            var ticketStatesDto = _mapper.Map<IEnumerable<TicketStateAndTagMiniResponseDto>>(ticketStates);
 
-            var response = new ApiResponse<IEnumerable<TicketStateResponseDto>>(ticketStatesDto);
+            var response = new ApiResponse<IEnumerable<TicketStateAndTagMiniResponseDto>>(ticketStatesDto);
 
             return Ok(response);
         }
@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
             if (ticketState is null)
                 throw new EntityNotFoundException(nameof(TicketState), id);
 
-            var ticketStateDto = _mapper.Map<TicketStateResponseDto>(ticketState);
+            var ticketStateDto = _mapper.Map<TicketStateAndTagResponseDto>(ticketState);
 
-            var response = new ApiResponse<TicketStateResponseDto>(ticketStateDto);
+            var response = new ApiResponse<TicketStateAndTagResponseDto>(ticketStateDto);
 
             return Ok(response);
         }

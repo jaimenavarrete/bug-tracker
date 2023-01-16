@@ -26,9 +26,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetTickets()
         {
             var tickets = await _ticketService.GetTickets();
-            var ticketsDto = _mapper.Map<IEnumerable<TicketResponseDto>>(tickets);
+            var ticketsDto = _mapper.Map<IEnumerable<TicketMiniResponseDto>>(tickets);
 
-            var response = new ApiResponse<IEnumerable<TicketResponseDto>>(ticketsDto);
+            var response = new ApiResponse<IEnumerable<TicketMiniResponseDto>>(ticketsDto);
 
             return Ok(response);
         }

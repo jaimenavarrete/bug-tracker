@@ -9,6 +9,8 @@ namespace Infrastructure.Mappings
     {
         public TicketProfile()
         {
+            CreateMap<Ticket, TicketMiniResponseDto>()
+                .ForMember(dest => dest.AssignedTags, opt => opt.MapFrom(src => src.Tags));
             CreateMap<Ticket, TicketResponseDto>()
                 .ForMember(dest => dest.AssignedTags, opt => opt.MapFrom(src => src.Tags));
             CreateMap<TicketRequestDto, Ticket>()
