@@ -26,9 +26,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetProjectStates()
         {
             var projectStates = await _projectStateService.GetProjectStates();
-            var projectStatesDto = _mapper.Map<IEnumerable<ProjectStateResponseDto>>(projectStates);
+            var projectStatesDto = _mapper.Map<IEnumerable<ProjectStateAndTagMiniResponseDto>>(projectStates);
 
-            var response = new ApiResponse<IEnumerable<ProjectStateResponseDto>>(projectStatesDto);
+            var response = new ApiResponse<IEnumerable<ProjectStateAndTagMiniResponseDto>>(projectStatesDto);
 
             return Ok(response);
         }
@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
             if (projectState is null)
                 throw new EntityNotFoundException(nameof(ProjectState), id);
 
-            var projectStateDto = _mapper.Map<ProjectStateResponseDto>(projectState);
+            var projectStateDto = _mapper.Map<ProjectStateAndTagResponseDto>(projectState);
 
-            var response = new ApiResponse<ProjectStateResponseDto>(projectStateDto);
+            var response = new ApiResponse<ProjectStateAndTagResponseDto>(projectStateDto);
 
             return Ok(response);
         }

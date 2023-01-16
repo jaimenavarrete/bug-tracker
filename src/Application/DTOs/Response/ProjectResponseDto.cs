@@ -13,7 +13,7 @@ namespace Application.DTOs.Response
 
         public string? OwnerId { get; set; }
 
-        public StateMiniResponseDto State { get; set; } = null!;
+        public StateAndTagMiniResponseDto State { get; set; } = null!;
 
         public DateTime? StartDate { get; set; }
 
@@ -21,7 +21,7 @@ namespace Application.DTOs.Response
 
         public GroupMiniResponseDto? Group { get; set; }
 
-        public IEnumerable<TagMiniResponseDto> AssignedTags { get; set; } = null!;
+        public IEnumerable<StateAndTagMiniResponseDto> AssignedTags { get; set; } = null!;
     }
 
     public class ProjectMiniResponseDto
@@ -34,7 +34,7 @@ namespace Application.DTOs.Response
 
         public string? OwnerId { get; set; }
 
-        public StateMiniResponseDto State { get; set; } = null!;
+        public StateAndTagMiniResponseDto State { get; set; } = null!;
 
         public DateTime? StartDate { get; set; }
 
@@ -42,6 +42,6 @@ namespace Application.DTOs.Response
 
         public GroupMiniResponseDto? Group { get; set; }
 
-        public IEnumerable<TagMiniResponseDto> AssignedTags { get; set; } = null!;
+        public IEnumerable<StateAndTagMiniResponseDto> AssignedTags { get; set; } = null!;
     }
 }

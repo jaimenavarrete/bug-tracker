@@ -9,8 +9,9 @@ namespace Infrastructure.Mappings
     {
         public ProjectTagProfile()
         {
-            CreateMap<ProjectTag, TagMiniResponseDto>();
-            CreateMap<ProjectTag, ProjectTagResponseDto>();
+            CreateMap<ProjectTag, StateAndTagMiniResponseDto>();
+            CreateMap<ProjectTag, ProjectStateAndTagMiniResponseDto>();
+            CreateMap<ProjectTag, ProjectStateAndTagResponseDto>();
             CreateMap<ProjectTagRequestDto, ProjectTag>();
         }
     }

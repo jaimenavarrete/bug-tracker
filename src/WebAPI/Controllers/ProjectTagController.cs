@@ -26,9 +26,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetProjectTags()
         {
             var projectTags = await _projectTagService.GetProjectTags();
-            var projectTagsDto = _mapper.Map<IEnumerable<ProjectTagResponseDto>>(projectTags);
+            var projectTagsDto = _mapper.Map<IEnumerable<ProjectStateAndTagMiniResponseDto>>(projectTags);
 
-            var response = new ApiResponse<IEnumerable<ProjectTagResponseDto>>(projectTagsDto);
+            var response = new ApiResponse<IEnumerable<ProjectStateAndTagMiniResponseDto>>(projectTagsDto);
 
             return Ok(response);
         }
@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
             if (projectTag is null)
                 throw new EntityNotFoundException(nameof(ProjectTag), id);
 
-            var projectTagDto = _mapper.Map<ProjectTagResponseDto>(projectTag);
+            var projectTagDto = _mapper.Map<ProjectStateAndTagResponseDto>(projectTag);
 
-            var response = new ApiResponse<ProjectTagResponseDto>(projectTagDto);
+            var response = new ApiResponse<ProjectStateAndTagResponseDto>(projectTagDto);
 
             return Ok(response);
         }
