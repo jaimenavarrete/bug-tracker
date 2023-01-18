@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Sockets;
 using WebAPI.Responses;
 
 namespace WebAPI.Controllers
@@ -57,7 +58,7 @@ namespace WebAPI.Controllers
 
             var response = new ApiResponse<CreationResponseDto>(responseDto);
 
-            return Ok(response);
+            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{ticketState.Id}", response);
         }
 
         [HttpPut("{id}")]
