@@ -1,10 +1,11 @@
 ﻿using Domain.Entities;
+using Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence
 {
-    public partial class BugTrackerContext : IdentityDbContext
+    public partial class BugTrackerContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public BugTrackerContext()
         {
@@ -324,6 +325,25 @@ namespace Infrastructure.Persistence
                     .WithMany(p => p.TicketTags)
                     .HasForeignKey(d => d.ProjectId)
                     .HasConstraintName("FK_Projects_TicketTags");
+            });
+
+            //**********************************************************************************************
+            // IDENTITY
+            //**********************************************************************************************
+
+            modelBuilder.Entity<ApplicationUser>(entity =>
+            {
+                entity.Property(e => e.FirstName).HasMaxLength(50);
+
+                entity.Property(e => e.LastName).HasMaxLength(50);
+
+                entity.Property(e => e.Biography).HasMaxLength(1000);
+
+                entity.Property(e => e.BirthDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Address).HasMaxLength(100);
+
+                entity.Property(e => e.ProfileImageUrl).HasMaxLength(100);
             });
         }
     }

@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Infrastructure.Filters;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace Infrastructure.Extensions
             services.AddDbContext<BugTrackerContext>(options => options.UseSqlServer(connectionString));
 
             // Identity
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<BugTrackerContext>()
                 .AddDefaultTokenProviders();
 
