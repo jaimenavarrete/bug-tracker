@@ -4,6 +4,7 @@ using Infrastructure.Filters;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,11 @@ namespace Infrastructure.Extensions
             // Database
             var connectionString = configuration.GetConnectionString("BugTracker");
             services.AddDbContext<BugTrackerContext>(options => options.UseSqlServer(connectionString));
+
+            // Identity
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<BugTrackerContext>()
+                .AddDefaultTokenProviders();
 
             // AutoMapper
             services.AddAutoMapper(typeof(DependencyInjection));

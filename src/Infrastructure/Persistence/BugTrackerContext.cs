@@ -1,9 +1,10 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence
 {
-    public partial class BugTrackerContext : DbContext
+    public partial class BugTrackerContext : IdentityDbContext
     {
         public BugTrackerContext()
         {
@@ -30,6 +31,8 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<ActionType>(entity =>
             {
                 entity.Property(e => e.Name).HasMaxLength(25);
