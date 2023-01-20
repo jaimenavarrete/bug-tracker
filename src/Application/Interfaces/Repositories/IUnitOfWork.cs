@@ -19,6 +19,8 @@ namespace Application.Interfaces.Repositories
 
         IBaseRepository<TicketTag> TicketTagRepository { get; }
 
+        IUserRepository UserRepository { get; }
+
         bool Complete();
 
         Task<bool> CompleteAsync();

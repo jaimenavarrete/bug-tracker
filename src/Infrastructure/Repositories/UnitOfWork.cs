@@ -3,12 +3,17 @@ using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Infrastructure.Common;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly BugTrackerContext _context;
+
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly IBaseRepository<Group> _groupRepository = null!;
         private readonly IBaseRepository<Project> _projectRepository = null!;
         private readonly IBaseRepository<Ticket> _ticketRepository = null!;
@@ -16,10 +21,12 @@ namespace Infrastructure.Repositories
         private readonly IBaseRepository<ProjectTag> _projectTagRepository = null!;
         private readonly IBaseRepository<TicketState> _ticketStateRepository = null!;
         private readonly IBaseRepository<TicketTag> _ticketTagRepository = null!;
+        private readonly IUserRepository _userRepository = null!;
 
-        public UnitOfWork(BugTrackerContext context)
+        public UnitOfWork(BugTrackerContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IBaseRepository<Group> GroupRepository => _groupRepository ?? new BaseRepository<Group>(_context);
@@ -35,6 +42,8 @@ namespace Infrastructure.Repositories
         public IBaseRepository<TicketState> TicketStateRepository => _ticketStateRepository ?? new BaseRepository<TicketState>(_context);
 
         public IBaseRepository<TicketTag> TicketTagRepository => _ticketTagRepository ?? new BaseRepository<TicketTag>(_context);
+
+        public IUserRepository UserRepository => _userRepository ?? new UserRepository(_context, _userManager);
 
         public bool Complete() => _context.SaveChanges() > 0;
 

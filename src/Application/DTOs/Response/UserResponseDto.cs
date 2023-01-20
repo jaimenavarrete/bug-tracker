@@ -1,16 +1,14 @@
-﻿using Domain.Common;
-
-namespace Domain.Entities
+﻿namespace Application.DTOs.Response
 {
-    public class User : BaseEntity
+    public class UserResponseDto
     {
+        public string Id { get; set; } = null!;
+
         public string FirstName { get; set; } = null!;
 
         public string LastName { get; set; } = null!;
 
         public string UserName { get; set; } = null!;
-
-        public string Password { get; set; } = null!;
 
         public string? Biography { get; set; }
 
@@ -25,6 +23,21 @@ namespace Domain.Entities
         public bool PhoneNumberConfirmed { get; set; }
 
         public string? Address { get; set; }
+
+        public string? ProfileImage { get; set; }
+    }
+
+    public class UserMiniResponseDto
+    {
+        public string FirstName { get; set; } = null!;
+
+        public string LastName { get; set; } = null!;
+
+        public string UserName { get; set; } = null!;
+
+        public string Email { get; set; } = null!;
+
+        public string PhoneNumber { get; set; } = null!;
 
         public string? ProfileImage { get; set; }
     }

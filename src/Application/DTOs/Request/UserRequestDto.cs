@@ -1,8 +1,6 @@
-﻿using Domain.Common;
-
-namespace Domain.Entities
+﻿namespace Application.DTOs.Request
 {
-    public class User : BaseEntity
+    public class UserRequestDto
     {
         public string FirstName { get; set; } = null!;
 
@@ -18,11 +16,7 @@ namespace Domain.Entities
 
         public string Email { get; set; } = null!;
 
-        public bool EmailConfirmed { get; set; }
-
         public string PhoneNumber { get; set; } = null!;
-
-        public bool PhoneNumberConfirmed { get; set; }
 
         public string? Address { get; set; }
 
