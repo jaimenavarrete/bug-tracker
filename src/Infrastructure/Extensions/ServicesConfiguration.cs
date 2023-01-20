@@ -35,6 +35,8 @@ namespace Infrastructure.Extensions
             services.AddValidatorsFromAssembly(typeof(ServicesConfiguration).Assembly);
 
             // Authentication
+            services.Configure<AuthOptions>(
+                configuration.GetSection(AuthOptions.SectionName));
             var authOptions = configuration.GetSection(AuthOptions.SectionName).Get<AuthOptions>();
             var secretKeyAsBytes = Encoding.UTF8.GetBytes(authOptions.SecretKey);
 

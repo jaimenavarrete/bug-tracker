@@ -4,11 +4,13 @@ using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Responses;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/tickets")]
     [ApiController]
     public class TicketController : ControllerBase

@@ -8,6 +8,8 @@ namespace Application.Interfaces.Repositories
 
         Task<User?> GetById(string id);
 
+        Task<User?> GetByCredentials(string email, string password);
+
         Task Create(User user);
     }
 }

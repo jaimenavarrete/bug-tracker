@@ -17,6 +17,9 @@ namespace Application.Services
 
         public async Task<User?> GetUserById(string id) => await _unitOfWork.UserRepository.GetById(id);
 
+        public async Task<User?> GetUserByCredentials(string email, string password) => 
+            await _unitOfWork.UserRepository.GetByCredentials(email, password);
+
         public async Task CreateUser(User user)
         {
             await _unitOfWork.UserRepository.Create(user);

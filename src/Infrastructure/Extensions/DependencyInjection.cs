@@ -4,6 +4,7 @@ using Application.Interfaces.Services;
 using Application.Services;
 using Infrastructure.Common;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions
@@ -24,6 +25,8 @@ namespace Infrastructure.Extensions
             services.AddTransient<ITicketStateService, TicketStateService>();
             services.AddTransient<ITicketTagService, TicketTagService>();
             services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<ITokenService, TokenService>();
 
             return services;
         }

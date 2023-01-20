@@ -22,6 +22,16 @@ namespace Infrastructure.Repositories
 
         public async Task<User?> GetById(string id) => await GetUsersQuery().FirstOrDefaultAsync(u => u.Id == id);
 
+        public async Task<User?> GetByCredentials(string email, string password)
+        {
+            var appUser = await _userManager.FindByEmailAsync(email);
+            var result = await _userManager.CheckPasswordAsync(appUser, password);
+
+            var user = MapUserFromApplicationUser(appUser);
+
+            return result ? user : null;
+        }
+
         public async Task Create(User user)
         {
             var appUser = new ApplicationUser
@@ -41,20 +51,22 @@ namespace Infrastructure.Repositories
             await _userManager.CreateAsync(appUser, user.Password);
         }
 
-        private IQueryable<User> GetUsersQuery() => _context.Users.Select(u => new User
+        private IQueryable<User> GetUsersQuery() => _context.Users.Select(u => MapUserFromApplicationUser(u));
+
+        private static User MapUserFromApplicationUser(ApplicationUser appUser) => new User
         {
-            Id = u.Id,
-            FirstName = u.FirstName,
-            LastName = u.LastName,
-            UserName = u.UserName,
-            Biography = u.Biography,
-            BirthDate = u.BirthDate,
-            Email = u.Email,
-            EmailConfirmed = u.EmailConfirmed,
-            PhoneNumber = u.PhoneNumber,
-            PhoneNumberConfirmed = u.PhoneNumberConfirmed,
-            Address = u.Address,
-            ProfileImage = u.ProfileImageUrl
-        });
+            Id = appUser.Id,
+            FirstName = appUser.FirstName,
+            LastName = appUser.LastName,
+            UserName = appUser.UserName,
+            Biography = appUser.Biography,
+            BirthDate = appUser.BirthDate,
+            Email = appUser.Email,
+            EmailConfirmed = appUser.EmailConfirmed,
+            PhoneNumber = appUser.PhoneNumber,
+            PhoneNumberConfirmed = appUser.PhoneNumberConfirmed,
+            Address = appUser.Address,
+            ProfileImage = appUser.ProfileImageUrl
+        };
     }
 }
