@@ -6,7 +6,7 @@ namespace Application.Interfaces.Repositories
     {
         Task<IEnumerable<User>> GetAll();
 
-        Task<User?> GetUserById(string id);
+        Task<User?> GetById(string id);
 
         Task Create(User user);
     }

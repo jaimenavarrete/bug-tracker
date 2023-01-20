@@ -15,7 +15,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<User>> GetUsers() => await _unitOfWork.UserRepository.GetAll();
 
-        public async Task<User?> GetUserById(string id) => await _unitOfWork.UserRepository.GetUserById(id);
+        public async Task<User?> GetUserById(string id) => await _unitOfWork.UserRepository.GetById(id);
 
         public async Task CreateUser(User user)
         {

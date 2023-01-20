@@ -1,7 +1,6 @@
 ﻿using Application.DTOs.Request;
 using Application.DTOs.Response;
 using Application.Interfaces.Services;
-using Application.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;
@@ -30,6 +29,21 @@ namespace WebAPI.Controllers
             var usersDto = _mapper.Map<IEnumerable<UserMiniResponseDto>>(users);
 
             var response = new ApiResponse<IEnumerable<UserMiniResponseDto>>(usersDto);
+
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            var user = await _userService.GetUserById(id);
+
+            if(user is null)
+                throw new EntityNotFoundException(nameof(Domain.Entities.User), id);
+
+            var userDto = _mapper.Map<UserResponseDto>(user);
+
+            var response = new ApiResponse<UserResponseDto>(userDto);
 
             return Ok(response);
         }

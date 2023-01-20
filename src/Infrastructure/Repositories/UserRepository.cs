@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetAll() => await GetUsersQuery().ToListAsync();
 
-        public async Task<User?> GetUserById(string id) => await GetUsersQuery().FirstOrDefaultAsync(u => u.Id == id);
+        public async Task<User?> GetById(string id) => await GetUsersQuery().FirstOrDefaultAsync(u => u.Id == id);
 
         public async Task Create(User user)
         {

@@ -10,6 +10,7 @@ namespace Infrastructure.Mappings
         public UserProfile()
         {
             CreateMap<User, UserMiniResponseDto>();
+            CreateMap<User, UserResponseDto>();
             CreateMap<UserRequestDto, User>();
         }
     }
