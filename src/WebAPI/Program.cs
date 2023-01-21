@@ -13,6 +13,8 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseCors(builder.Configuration.GetValue<string>("MainCORS"));
+
 app.UseAuthentication();
 app.UseAuthorization();
 

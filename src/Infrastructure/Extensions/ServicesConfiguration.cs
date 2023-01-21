@@ -59,6 +59,20 @@ namespace Infrastructure.Extensions
                 };
             });
 
+            // CORS
+            string mainCors = configuration.GetValue<string>("MainCORS");
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: mainCors, builder =>
+                {
+                    // Works with internet domains
+                    //builder.WithOrigins("http://localhost");
+
+                    // Works with localhost
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                });
+            });
+
             // Filters and controllers
             services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
 
