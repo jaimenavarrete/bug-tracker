@@ -1,5 +1,6 @@
 <ul
-  class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+  class="navbar-nav h-100 bg-gradient-primary sidebar sidebar-dark accordion"
+  [ngClass]="sidebarOpen ? 'toggled' : ''"
   id="accordionSidebar"
 >
   <!-- Sidebar - Brand -->
@@ -145,6 +146,10 @@
 
   <!-- Sidebar Toggler (Sidebar) -->
   <div class="text-center d-none d-md-inline">
-    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    <button
+      class="rounded-circle border-0"
+      id="sidebarToggle"
+      (click)="changeSidebarState()"
+    ></button>
   </div>
 </ul>
