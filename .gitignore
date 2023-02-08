@@ -457,13 +457,12 @@ $RECYCLE.BIN/
 ############################ FRONTEND #################################
 
 # Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+src/Frontend/Angular/dist
+src/Frontend/Angular/tmp
+src/Frontend/Angular/out-tsc
+src/Frontend/Angular/bazel-out
 
 # Node
-/node_modules
 npm-debug.log
 yarn-error.log
 
@@ -477,10 +476,10 @@ yarn-error.log
 *.sublime-workspace
 
 # Miscellaneous
-/.angular/cache
+src/Frontend/Angular/.angular/cache
 .sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
+src/Frontend/Angular/connect.lock
+src/Frontend/Angular/coverage
+src/Frontend/Angular/libpeerconnection.log
 testem.log
-/typings
+src/Frontend/Angular/typings
