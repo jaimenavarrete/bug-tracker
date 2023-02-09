@@ -1,0 +1,46 @@
+<table class="table table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Project Name</th>
+      <th scope="col">Tickets prefix</th>
+      <th scope="col">Owner</th>
+      <th scope="col">State</th>
+      <th scope="col">Start date</th>
+      <th scope="col">Completion date</th>
+      <th scope="col">Group</th>
+      <th scope="col">Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let project of projectsList; let position = index">
+      <th scope="row">{{ position + 1 }}</th>
+      <th class="text-primary">
+        <a href="#">{{ project.name }}</a>
+      </th>
+      <td>{{ project.ticketsPrefix }}</td>
+      <td>{{ project.ownerId }}</td>
+      <td>
+        <span
+          class="badge badge-pill text-white py-2 px-3"
+          [style.background-color]="project.state.colorHexCode"
+          >{{ project.state.name }}
+        </span>
+      </td>
+      <td><i class="far fa-calendar"></i> {{ project.startDate | date }}</td>
+      <td>
+        <i class="far fa-calendar"></i> {{ project.completionDate | date }}
+      </td>
+      <td>{{ project.group.name }}</td>
+      <td>
+        <span *ngFor="let tag of project.assignedTags">
+          <span
+            class="badge text-white py-2 px-3"
+            [style.background-color]="tag.colorHexCode"
+            >{{ tag.name }}
+          </span>
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
