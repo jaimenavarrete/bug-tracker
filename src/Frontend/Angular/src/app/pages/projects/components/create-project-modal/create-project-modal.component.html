@@ -22,83 +22,136 @@
         </button>
       </div>
       <div class="modal-body p-4">
-        <form id="create-project-form" action="#" method="post">
+        <!-- <pre>{{ createProjectForm.value | json }}</pre> -->
+
+        <form
+          (ngSubmit)="createProjectSubmit()"
+          #createProjectForm="ngForm"
+          id="create-project-form"
+        >
           <div class="form-group">
             <label for="create-project-input-name" class="font-weight-bold"
-              >Project name</label
+              >Project name
+              <span class="font-weight-bold text-danger">*</span></label
             >
             <input
               type="text"
+              [(ngModel)]="model.name"
+              name="name"
               class="form-control"
               id="create-project-input-name"
+              required
             />
           </div>
+
           <div class="form-group">
             <label for="create-project-input-description">Description</label>
             <textarea
+              [(ngModel)]="model.description"
+              name="description"
               class="form-control"
               id="create-project-input-description"
               rows="3"
             ></textarea>
           </div>
+
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="create-project-input-tickets-prefix"
-                >Tickets prefix</label
+                >Tickets prefix
+                <span class="font-weight-bold text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="model.ticketsPrefix"
+                name="ticketsPrefix"
+                class="form-control"
+                id="create-project-input-tickets-prefix"
+                required
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="create-project-input-owner"
+                >Owner
+                <span class="font-weight-bold text-danger">*</span></label
               >
               <input
                 type="text"
-                class="form-control"
-                id="create-project-input-tickets-prefix"
-              />
-            </div>
-            <div class="form-group col-md-6">
-              <label for="create-project-input-owner">Owner</label>
-              <input
-                type="text"
+                [(ngModel)]="model.ownerId"
+                name="ownerId"
                 class="form-control"
                 id="create-project-input-owner"
+                required
               />
             </div>
           </div>
+
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="create-project-input-start-date">Start date</label>
               <input
                 type="date"
+                [(ngModel)]="model.startDate"
+                name="startDate"
                 class="form-control"
                 id="create-project-input-start-date"
               />
             </div>
+
             <div class="form-group col-md-6">
               <label for="create-project-input-completion-date"
                 >Completion date</label
               >
               <input
                 type="date"
+                [(ngModel)]="model.completionDate"
+                name="completionDate"
                 class="form-control"
                 id="create-project-input-completion-date"
               />
             </div>
           </div>
+
           <div class="form-group">
             <label for="create-project-input-group">Group</label>
-            <select id="create-project-input-group" class="form-control">
+            <select
+              [(ngModel)]="model.groupId"
+              name="groupId"
+              id="create-project-input-group"
+              class="form-control"
+            >
               <option selected>Select group...</option>
-              <option>Group 1</option>
-              <option>Group 2</option>
-              <option>Group 3</option>
+              <option value="5371a1d9-5c47-49ca-be13-0e1ad1cc71b9">
+                Sleek Concrete Towels
+              </option>
+              <option value="dd962fa7-a222-4c0f-8659-604c87cdd868">
+                Awesome Rubber Gloves
+              </option>
             </select>
           </div>
+
           <div class="form-group">
-            <label for="create-project-input-state">State</label>
-            <select id="create-project-input-state" class="form-control">
+            <label for="create-project-input-state"
+              >State <span class="font-weight-bold text-danger">*</span></label
+            >
+            <select
+              [(ngModel)]="model.stateId"
+              name="stateId"
+              id="create-project-input-state"
+              class="form-control"
+              required
+            >
               <option selected>Select project state...</option>
-              <option>Project state 1</option>
-              <option>Project state 2</option>
-              <option>Project state 3</option>
+              <option value="18eae877-9967-43f2-9d31-a5be109b3464">
+                Tasty Steel Chicken
+              </option>
+              <option value="2532ceff-3498-48d5-bec6-6f7b510f5a89">
+                Licensed Cotton Bacon
+              </option>
             </select>
           </div>
+
           <div class="form-group">
             <label for="create-project-input-tags">Tags</label>
             <div class="input-group mb-2 mr-sm-2">
@@ -107,6 +160,8 @@
               </div>
               <input
                 type="text"
+                [(ngModel)]="model.assignedTagsId"
+                name="assignedTagsId"
                 class="form-control"
                 id="create-project-input-tags"
                 placeholder="Add a tag..."
@@ -123,7 +178,11 @@
         >
           Close
         </button>
-        <button type="button" class="btn btn-primary">
+        <button
+          type="submit"
+          form="create-project-form"
+          class="btn btn-primary"
+        >
           <i class="fas fa-plus"></i> Create
         </button>
       </div>

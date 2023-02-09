@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { TopbarComponent } from './shared/components/topbar/topbar.component';
-
 @NgModule({
   declarations: [
     AppComponent,

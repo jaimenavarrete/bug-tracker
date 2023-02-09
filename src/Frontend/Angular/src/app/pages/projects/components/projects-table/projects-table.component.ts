@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProjectList } from '../../interfaces/projectList.interface';
+import { ProjectList } from '../../interfaces/project-list.interface';
 
 @Component({
   selector: 'app-projects-table',
