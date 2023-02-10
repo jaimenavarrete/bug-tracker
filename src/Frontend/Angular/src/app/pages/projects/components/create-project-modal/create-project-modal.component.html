@@ -152,11 +152,8 @@
               class="form-control"
             >
               <option selected>Select group...</option>
-              <option value="5371a1d9-5c47-49ca-be13-0e1ad1cc71b9">
-                Sleek Concrete Towels
-              </option>
-              <option value="dd962fa7-a222-4c0f-8659-604c87cdd868">
-                Awesome Rubber Gloves
+              <option [value]="group.id" *ngFor="let group of groupsList">
+                {{ group.name }}
               </option>
             </select>
           </div>
