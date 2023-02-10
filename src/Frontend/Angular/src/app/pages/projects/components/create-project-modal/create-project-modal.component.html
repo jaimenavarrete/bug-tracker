@@ -25,7 +25,7 @@
         <!-- <pre>{{ createProjectForm.value | json }}</pre> -->
 
         <form
-          (ngSubmit)="createProjectSubmit()"
+          (ngSubmit)="onSubmit(createProjectForm)"
           #createProjectForm="ngForm"
           id="create-project-form"
         >
@@ -38,10 +38,18 @@
               type="text"
               [(ngModel)]="model.name"
               name="name"
+              #name="ngModel"
               class="form-control"
+              [ngClass]="name.valid || name.pristine ? '' : 'is-invalid'"
               id="create-project-input-name"
               required
             />
+            <div
+              [hidden]="name.valid || name.pristine"
+              class="invalid-feedback"
+            >
+              The project name is required
+            </div>
           </div>
 
           <div class="form-group">
@@ -65,10 +73,22 @@
                 type="text"
                 [(ngModel)]="model.ticketsPrefix"
                 name="ticketsPrefix"
+                #ticketsPrefix="ngModel"
                 class="form-control"
+                [ngClass]="
+                  ticketsPrefix.valid || ticketsPrefix.pristine
+                    ? ''
+                    : 'is-invalid'
+                "
                 id="create-project-input-tickets-prefix"
                 required
               />
+              <div
+                [hidden]="ticketsPrefix.valid || ticketsPrefix.pristine"
+                class="invalid-feedback"
+              >
+                The tickets prefix is required
+              </div>
             </div>
 
             <div class="form-group col-md-6">
@@ -80,10 +100,20 @@
                 type="text"
                 [(ngModel)]="model.ownerId"
                 name="ownerId"
+                #ownerId="ngModel"
                 class="form-control"
+                [ngClass]="
+                  ownerId.valid || ownerId.pristine ? '' : 'is-invalid'
+                "
                 id="create-project-input-owner"
                 required
               />
+              <div
+                [hidden]="ownerId.valid || ownerId.pristine"
+                class="invalid-feedback"
+              >
+                The owner is required
+              </div>
             </div>
           </div>
 
@@ -138,8 +168,10 @@
             <select
               [(ngModel)]="model.stateId"
               name="stateId"
+              #stateId="ngModel"
               id="create-project-input-state"
               class="form-control"
+              [ngClass]="stateId.valid || stateId.pristine ? '' : 'is-invalid'"
               required
             >
               <option selected>Select project state...</option>
@@ -150,6 +182,12 @@
                 Licensed Cotton Bacon
               </option>
             </select>
+            <div
+              [hidden]="stateId.valid || stateId.pristine"
+              class="invalid-feedback"
+            >
+              The state is required
+            </div>
           </div>
 
           <div class="form-group">

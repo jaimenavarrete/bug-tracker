@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { CreateProject } from '../../interfaces/create-project.interface';
 
 @Component({
@@ -21,7 +22,11 @@ export class CreateProjectModalComponent {
 
   constructor() {}
 
-  createProjectSubmit() {
-    alert(this.model.name);
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      alert('The form is valid');
+    } else {
+      alert('The form is invalid');
+    }
   }
 }
