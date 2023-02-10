@@ -3,7 +3,9 @@ import { NgForm } from '@angular/forms';
 import { tap } from 'rxjs';
 import { CreateProject } from '../../interfaces/create-project.interface';
 import { GroupList } from '../../interfaces/group-list.interface';
+import { ProjectStateList } from '../../interfaces/project-state-list.interface';
 import { GroupsService } from '../../services/groups.service';
+import { ProjectStatesService } from '../../services/project-states.service';
 
 @Component({
   selector: 'app-create-project-modal',
@@ -12,6 +14,7 @@ import { GroupsService } from '../../services/groups.service';
 })
 export class CreateProjectModalComponent implements OnInit {
   groupsList!: GroupList[];
+  projectStatesList!: ProjectStateList[];
 
   model: CreateProject = {
     name: '',
@@ -25,10 +28,14 @@ export class CreateProjectModalComponent implements OnInit {
     assignedTagsId: undefined,
   };
 
-  constructor(private groupsService: GroupsService) {}
+  constructor(
+    private groupsService: GroupsService,
+    private projectStatesService: ProjectStatesService
+  ) {}
 
   ngOnInit(): void {
     this.getGroups();
+    this.getProjectStates();
   }
 
   onSubmit(form: NgForm) {
@@ -43,6 +50,13 @@ export class CreateProjectModalComponent implements OnInit {
     this.groupsService
       .getGroups()
       .pipe(tap((res) => (this.groupsList = res.data)))
+      .subscribe();
+  }
+
+  private getProjectStates(): void {
+    this.projectStatesService
+      .getProjectStates()
+      .pipe(tap((res) => (this.projectStatesList = res.data)))
       .subscribe();
   }
 }

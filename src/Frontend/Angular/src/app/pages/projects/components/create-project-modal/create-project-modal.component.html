@@ -172,11 +172,11 @@
               required
             >
               <option selected>Select project state...</option>
-              <option value="18eae877-9967-43f2-9d31-a5be109b3464">
-                Tasty Steel Chicken
-              </option>
-              <option value="2532ceff-3498-48d5-bec6-6f7b510f5a89">
-                Licensed Cotton Bacon
+              <option
+                [value]="projectState.id"
+                *ngFor="let projectState of projectStatesList"
+              >
+                {{ projectState.name }}
               </option>
             </select>
             <div
