@@ -218,7 +218,16 @@
           form="create-project-form"
           class="btn btn-primary"
         >
-          <i class="fas fa-plus"></i> Create
+          <div
+            class="spinner-border spinner-border-sm text-white d-flex align-items-center"
+            role="status"
+            *ngIf="isLoading"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
+          <ng-container *ngIf="!isLoading">
+            <i class="fas fa-plus"></i> Create
+          </ng-container>
         </button>
       </div>
     </div>

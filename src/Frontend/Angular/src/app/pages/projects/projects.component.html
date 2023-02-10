@@ -17,4 +17,6 @@
   </div>
 </div>
 
-<app-create-project-modal></app-create-project-modal>
+<app-create-project-modal
+  (projectCreated)="updateProjectsList()"
+></app-create-project-modal>
