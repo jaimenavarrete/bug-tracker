@@ -69,7 +69,9 @@ namespace Infrastructure.Extensions
                     //builder.WithOrigins("http://localhost");
 
                     // Works with localhost
-                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
                 });
             });
 
