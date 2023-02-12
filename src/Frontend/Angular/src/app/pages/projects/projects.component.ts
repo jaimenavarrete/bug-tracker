@@ -14,17 +14,8 @@ export class ProjectsComponent implements OnInit {
   constructor(private projectsService: ProjectsService) {}
 
   ngOnInit(): void {
-    this.updateProjectsList();
-  }
-
-  updateProjectsList(): void {
-    this.getProjects();
-  }
-
-  private getProjects(): void {
-    this.projectsService
-      .getProjects()
-      .pipe(tap((res) => (this.projectsList = res.data)))
-      .subscribe();
+    this.projectsService.projectsListAction$.subscribe(
+      (res) => (this.projectsList = res.data)
+    );
   }
 }

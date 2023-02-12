@@ -17,7 +17,6 @@ export class CreateProjectModalComponent implements OnInit {
   groupsList!: GroupList[];
   projectStatesList!: ProjectStateList[];
   isLoading: boolean = false;
-  @Output() projectCreated = new EventEmitter<boolean>();
 
   model: CreateProject = {
     name: '',
@@ -50,7 +49,7 @@ export class CreateProjectModalComponent implements OnInit {
 
       setTimeout(() => {
         this.isLoading = false;
-        this.projectCreated.emit(true);
+        this.projectsService.projectsListSubjectUpdate();
       }, 250);
     } else {
       alert('The form is invalid');
