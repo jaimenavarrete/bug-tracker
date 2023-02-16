@@ -151,7 +151,7 @@
               id="create-project-input-group"
               class="form-control"
             >
-              <option selected>Select group...</option>
+              <option value="" selected>Select group...</option>
               <option [value]="group.id" *ngFor="let group of groupsList">
                 {{ group.name }}
               </option>
@@ -171,7 +171,7 @@
               [ngClass]="stateId.valid || stateId.pristine ? '' : 'is-invalid'"
               required
             >
-              <option selected>Select project state...</option>
+              <option value="" selected>Select project state...</option>
               <option
                 [value]="projectState.id"
                 *ngFor="let projectState of projectStatesList"

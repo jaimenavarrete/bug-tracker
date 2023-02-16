@@ -15,6 +15,8 @@ import { GroupsService } from '../../services/groups.service';
 import { ProjectStatesService } from '../../services/project-states.service';
 import { ProjectsService } from '../../services/projects.service';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-create-project-modal',
   templateUrl: './create-project-modal.component.html',
@@ -54,13 +56,13 @@ export class CreateProjectModalComponent implements OnInit {
   private clearModel(): void {
     this.model = {
       name: '',
-      description: undefined,
+      description: '',
       ticketsPrefix: '',
       ownerId: '',
       startDate: undefined,
       completionDate: undefined,
       stateId: '',
-      groupId: undefined,
+      groupId: '',
       assignedTagsId: undefined,
     };
   }
@@ -84,13 +86,29 @@ export class CreateProjectModalComponent implements OnInit {
       .createProject(project)
       .pipe(
         tap((res) => {
-          this.projectsService.projectsListSubjectUpdate();
-
-          this.isLoading = false;
-          this.closeModalButton.nativeElement.click();
           this.clearModel();
+
+          this.projectsService.projectsListSubjectUpdate();
+          this.closeCreateProjectModal();
+          this.showCompletionAlert();
         })
       )
       .subscribe();
+  }
+
+  private closeCreateProjectModal(): void {
+    this.isLoading = false;
+    this.closeModalButton.nativeElement.click();
+  }
+
+  private showCompletionAlert(): void {
+    Swal.fire({
+      title: 'Success!',
+      text: 'The project was created successfully!',
+      icon: 'success',
+      showCancelButton: true,
+      cancelButtonText: 'Close',
+      confirmButtonText: 'Go to project',
+    });
   }
 }
