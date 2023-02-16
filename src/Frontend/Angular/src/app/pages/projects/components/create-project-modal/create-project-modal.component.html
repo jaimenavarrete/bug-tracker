@@ -207,6 +207,7 @@
       </div>
       <div class="modal-footer">
         <button
+          #closeModalButton
           type="button"
           class="btn btn-outline-secondary"
           data-dismiss="modal"
@@ -218,16 +219,18 @@
           form="create-project-form"
           class="btn btn-primary"
         >
-          <div
-            class="spinner-border spinner-border-sm text-white d-flex align-items-center"
-            role="status"
-            *ngIf="isLoading"
-          >
-            <span class="sr-only">Loading...</span>
-          </div>
-          <ng-container *ngIf="!isLoading">
-            <i class="fas fa-plus"></i> Create
+          <ng-container *ngIf="isLoading; else createButtonText">
+            <div
+              class="spinner-border spinner-border-sm text-white d-flex align-items-center"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
           </ng-container>
+
+          <ng-template #createButtonText>
+            <i class="fas fa-plus"></i> Create
+          </ng-template>
         </button>
       </div>
     </div>

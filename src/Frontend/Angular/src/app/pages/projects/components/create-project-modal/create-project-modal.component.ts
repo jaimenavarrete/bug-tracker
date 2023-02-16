@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { tap } from 'rxjs';
 import { CreateProject } from '../../interfaces/create-project.interface';
@@ -14,21 +21,13 @@ import { ProjectsService } from '../../services/projects.service';
   styleUrls: ['./create-project-modal.component.scss'],
 })
 export class CreateProjectModalComponent implements OnInit {
+  @ViewChild('closeModalButton') closeModalButton!: ElementRef;
+
   groupsList!: GroupList[];
   projectStatesList!: ProjectStateList[];
-  isLoading: boolean = false;
 
-  model: CreateProject = {
-    name: '',
-    description: undefined,
-    ticketsPrefix: '',
-    ownerId: '',
-    startDate: undefined,
-    completionDate: undefined,
-    stateId: '',
-    groupId: undefined,
-    assignedTagsId: undefined,
-  };
+  model!: CreateProject;
+  isLoading: boolean = false;
 
   constructor(
     private projectsService: ProjectsService,
@@ -37,6 +36,8 @@ export class CreateProjectModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.clearModel();
+
     this.getGroups();
     this.getProjectStates();
   }
@@ -44,16 +45,24 @@ export class CreateProjectModalComponent implements OnInit {
   onSubmit({ value: formData, valid: isValid }: NgForm) {
     if (isValid) {
       this.isLoading = true;
-
       this.createProject(formData);
-
-      setTimeout(() => {
-        this.isLoading = false;
-        this.projectsService.projectsListSubjectUpdate();
-      }, 250);
     } else {
       alert('The form is invalid');
     }
+  }
+
+  private clearModel(): void {
+    this.model = {
+      name: '',
+      description: undefined,
+      ticketsPrefix: '',
+      ownerId: '',
+      startDate: undefined,
+      completionDate: undefined,
+      stateId: '',
+      groupId: undefined,
+      assignedTagsId: undefined,
+    };
   }
 
   private getGroups(): void {
@@ -73,7 +82,15 @@ export class CreateProjectModalComponent implements OnInit {
   private createProject(project: CreateProject) {
     this.projectsService
       .createProject(project)
-      .pipe(tap((res) => console.log(res)))
+      .pipe(
+        tap((res) => {
+          this.projectsService.projectsListSubjectUpdate();
+
+          this.isLoading = false;
+          this.closeModalButton.nativeElement.click();
+          this.clearModel();
+        })
+      )
       .subscribe();
   }
 }
