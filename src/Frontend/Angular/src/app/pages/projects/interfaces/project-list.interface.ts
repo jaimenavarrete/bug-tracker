@@ -1,3 +1,7 @@
+import { GroupMini } from './group-list.interface';
+import { ProjectStateMini } from './project-state-list.interface';
+import { ProjectTagMini } from './project-tag.interface';
+
 export interface ProjectList {
   id: string;
   name: string;
@@ -8,21 +12,4 @@ export interface ProjectList {
   completionDate: Date;
   group: GroupMini;
   assignedTags: ProjectTagMini[];
-}
-
-export interface ProjectStateMini {
-  id: string;
-  name: string;
-  colorHexCode: string;
-}
-
-export interface GroupMini {
-  id: string;
-  name: string;
-}
-
-export interface ProjectTagMini {
-  id: string;
-  name: string;
-  colorHexCode: string;
 }

@@ -9,6 +9,8 @@ import { ProjectStatesService } from '../../services/project-states.service';
 import { ProjectsService } from '../../services/projects.service';
 
 import Swal from 'sweetalert2';
+import { ProjectTagList } from '../../interfaces/project-tag.interface';
+import { ProjectTagsService } from '../../services/project-tags.service';
 
 @Component({
   selector: 'app-create-project-modal',
@@ -20,18 +22,7 @@ export class CreateProjectModalComponent implements OnInit {
 
   groupsList!: GroupList[];
   projectStatesList!: ProjectStateList[];
-  projectTagsList = [
-    {
-      id: 'ee84a39d-06bf-44a7-bf3b-1930a10945a6',
-      name: 'Tag1',
-      colorHexCode: '#FF0000',
-    },
-    {
-      id: 'c17a00b9-3aa1-4518-b1ce-6a46a456f1c1',
-      name: 'Tag2',
-      colorHexCode: '#00FF00',
-    },
-  ];
+  projectTagsList!: ProjectTagList[];
 
   model!: CreateProject;
   inputTagName = '';
@@ -41,7 +32,8 @@ export class CreateProjectModalComponent implements OnInit {
   constructor(
     private projectsService: ProjectsService,
     private groupsService: GroupsService,
-    private projectStatesService: ProjectStatesService
+    private projectStatesService: ProjectStatesService,
+    private projectTagsService: ProjectTagsService
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +41,7 @@ export class CreateProjectModalComponent implements OnInit {
 
     this.getGroups();
     this.getProjectStates();
+    this.getProjectTags();
   }
 
   addAssignedTag(event: KeyboardEvent): void {
@@ -114,6 +107,13 @@ export class CreateProjectModalComponent implements OnInit {
     this.projectStatesService
       .getProjectStates()
       .pipe(tap((res) => (this.projectStatesList = res.data)))
+      .subscribe();
+  }
+
+  private getProjectTags(): void {
+    this.projectTagsService
+      .getProjectTags()
+      .pipe(tap((res) => (this.projectTagsList = res.data)))
       .subscribe();
   }
 
