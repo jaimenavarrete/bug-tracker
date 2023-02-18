@@ -10,8 +10,6 @@ import { ProjectsService } from '../../services/projects.service';
 
 import Swal from 'sweetalert2';
 import { ProjectTagList } from '../../interfaces/project-tag.interface';
-import { ProjectTagsService } from '../../services/project-tags.service';
-
 @Component({
   selector: 'app-create-project-modal',
   templateUrl: './create-project-modal.component.html',
@@ -22,18 +20,16 @@ export class CreateProjectModalComponent implements OnInit {
 
   groupsList!: GroupList[];
   projectStatesList!: ProjectStateList[];
-  projectTagsList!: ProjectTagList[];
 
   model!: CreateProject;
-  inputTagName = '';
-  assignedTagsList!: { id: string; name: string; colorHexCode: string }[];
+  inputTagName!: string;
+  assignedTagsList!: ProjectTagList[];
   isLoading: boolean = false;
 
   constructor(
     private projectsService: ProjectsService,
     private groupsService: GroupsService,
-    private projectStatesService: ProjectStatesService,
-    private projectTagsService: ProjectTagsService
+    private projectStatesService: ProjectStatesService
   ) {}
 
   ngOnInit(): void {
@@ -41,33 +37,6 @@ export class CreateProjectModalComponent implements OnInit {
 
     this.getGroups();
     this.getProjectStates();
-    this.getProjectTags();
-  }
-
-  addAssignedTag(event: KeyboardEvent): void {
-    if (event.key === ',') {
-      let tagName = this.inputTagName.replaceAll(',', '').trim();
-      tagName = tagName.toLowerCase();
-
-      let newTag = this.projectTagsList.find(
-        (tag) => tag.name.toLowerCase() === tagName
-      );
-
-      if (newTag) {
-        this.inputTagName = '';
-        this.model.assignedTagsId?.push(newTag.id);
-        this.assignedTagsList?.push(newTag);
-      }
-    }
-  }
-
-  removeAssignedTag(assignedTagId: string): void {
-    let tagIndex = this.model.assignedTagsId?.indexOf(assignedTagId);
-
-    if (tagIndex !== undefined && tagIndex !== -1) {
-      this.model.assignedTagsId?.splice(tagIndex, 1);
-      this.assignedTagsList?.splice(tagIndex, 1);
-    }
   }
 
   onSubmit({ valid: isValid }: NgForm) {
@@ -107,13 +76,6 @@ export class CreateProjectModalComponent implements OnInit {
     this.projectStatesService
       .getProjectStates()
       .pipe(tap((res) => (this.projectStatesList = res.data)))
-      .subscribe();
-  }
-
-  private getProjectTags(): void {
-    this.projectTagsService
-      .getProjectTags()
-      .pipe(tap((res) => (this.projectTagsList = res.data)))
       .subscribe();
   }
 

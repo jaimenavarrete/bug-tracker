@@ -1,0 +1,30 @@
+<div class="form-group">
+  <label for="create-project-input-tags">Tags</label>
+  <div class="input-group mb-2 mr-sm-2">
+    <div class="input-group-prepend">
+      <div class="input-group-text"><i class="fas fa-tags"></i></div>
+    </div>
+    <input
+      type="text"
+      [(ngModel)]="inputTagName"
+      name="assignedTagsId"
+      class="form-control"
+      id="create-project-input-tags"
+      placeholder="Add a tag..."
+      (keyup)="addAssignedTag($event)"
+    />
+  </div>
+  <div>
+    <ng-container *ngIf="assignedTagsList.length === 0">
+      <span class="badge py-2 px-2 m-1">No tags</span>
+    </ng-container>
+    <a
+      href="#"
+      class="badge badge-primary text-white py-2 px-2 m-1"
+      *ngFor="let tag of assignedTagsList"
+      [style.background]="tag.colorHexCode"
+      (click)="removeAssignedTag(tag.id)"
+      >{{ tag.name }} <i class="fas fa-times-circle"></i
+    ></a>
+  </div>
+</div>
