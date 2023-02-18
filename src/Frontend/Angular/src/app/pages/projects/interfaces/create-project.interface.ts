@@ -1,4 +1,5 @@
 export interface CreateProject {
+  id: string;
   name: string;
   description?: string;
   ticketsPrefix: string;

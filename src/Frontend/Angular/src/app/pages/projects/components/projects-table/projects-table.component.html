@@ -10,6 +10,7 @@
       <th scope="col">Completion date</th>
       <th scope="col">Group</th>
       <th scope="col">Tags</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -40,6 +41,25 @@
             >{{ tag.name }}
           </span>
         </span>
+      </td>
+      <td class="dropdown text-center">
+        <button
+          class="btn"
+          type="button"
+          data-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item text-muted"
+            ><i class="fas fa-pen"></i> Edit</a
+          >
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item text-danger"
+            ><i class="fas fa-trash"></i> Delete</a
+          >
+        </div>
       </td>
     </tr>
   </tbody>

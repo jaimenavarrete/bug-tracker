@@ -1,11 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { tap } from 'rxjs';
 import { CreateProject } from '../../interfaces/create-project.interface';
 import { GroupList } from '../../interfaces/group-list.interface';
 import { ProjectStateList } from '../../interfaces/project-state-list.interface';
-import { GroupsService } from '../../services/groups.service';
-import { ProjectStatesService } from '../../services/project-states.service';
 import { ProjectsService } from '../../services/projects.service';
 
 import Swal from 'sweetalert2';
@@ -18,25 +16,18 @@ import { ProjectTagList } from '../../interfaces/project-tag.interface';
 export class CreateProjectModalComponent implements OnInit {
   @ViewChild('closeModalButton') closeModalButton!: ElementRef;
 
-  groupsList!: GroupList[];
-  projectStatesList!: ProjectStateList[];
+  @Input() groupsList!: GroupList[];
+  @Input() projectStatesList!: ProjectStateList[];
 
   model!: CreateProject;
   inputTagName!: string;
   assignedTagsList!: ProjectTagList[];
   isLoading: boolean = false;
 
-  constructor(
-    private projectsService: ProjectsService,
-    private groupsService: GroupsService,
-    private projectStatesService: ProjectStatesService
-  ) {}
+  constructor(private projectsService: ProjectsService) {}
 
   ngOnInit(): void {
     this.clearModel();
-
-    this.getGroups();
-    this.getProjectStates();
   }
 
   onSubmit({ valid: isValid }: NgForm) {
@@ -48,8 +39,9 @@ export class CreateProjectModalComponent implements OnInit {
     }
   }
 
-  private clearModel(): void {
+  clearModel(): void {
     this.model = {
+      id: '',
       name: '',
       description: '',
       ticketsPrefix: '',
@@ -63,20 +55,6 @@ export class CreateProjectModalComponent implements OnInit {
 
     this.inputTagName = '';
     this.assignedTagsList = [];
-  }
-
-  private getGroups(): void {
-    this.groupsService
-      .getGroups()
-      .pipe(tap((res) => (this.groupsList = res.data)))
-      .subscribe();
-  }
-
-  private getProjectStates(): void {
-    this.projectStatesService
-      .getProjectStates()
-      .pipe(tap((res) => (this.projectStatesList = res.data)))
-      .subscribe();
   }
 
   private createProject(project: CreateProject) {
