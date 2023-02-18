@@ -10,7 +10,10 @@
     <div class="modal-content border-bottom-primary">
       <div class="modal-header">
         <h5 class="modal-title text-primary" id="exampleModalLabel">
-          Create new project
+          <ng-container *ngIf="model.id; else newProjectText">
+            Edit current project
+          </ng-container>
+          <ng-template #newProjectText> Create new project </ng-template>
         </h5>
         <button
           type="button"
@@ -218,7 +221,12 @@
           </ng-container>
 
           <ng-template #createButtonText>
-            <i class="fas fa-plus"></i> Create
+            <ng-container *ngIf="model.id; else newProjectButtonText">
+              <i class="fas fa-pen"></i> Edit
+            </ng-container>
+            <ng-template #newProjectButtonText>
+              <i class="fas fa-plus"></i> Create
+            </ng-template>
           </ng-template>
         </button>
       </div>

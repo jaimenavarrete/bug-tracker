@@ -4,6 +4,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { ApiResponse } from 'src/app/shared/interfaces/api-response.interface';
 import { CreateProject } from '../interfaces/create-project.interface';
 import { ProjectList } from '../interfaces/project-list.interface';
+import { Project } from '../interfaces/project.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,11 @@ export class ProjectsService {
 
   private getProjects(): Observable<ApiResponse<ProjectList[]>> {
     return this.http.get<ApiResponse<ProjectList[]>>(this.apiURL);
+  }
+
+  getProjectById(projectId: string): Observable<ApiResponse<Project>> {
+    const url = `${this.apiURL}/${projectId}`;
+    return this.http.get<ApiResponse<Project>>(url);
   }
 
   createProject(project: CreateProject): Observable<ApiResponse<string>> {

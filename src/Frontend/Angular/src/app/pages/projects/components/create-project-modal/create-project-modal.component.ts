@@ -8,6 +8,7 @@ import { ProjectsService } from '../../services/projects.service';
 
 import Swal from 'sweetalert2';
 import { ProjectTagList } from '../../interfaces/project-tag.interface';
+import { Project } from '../../interfaces/project.interface';
 @Component({
   selector: 'app-create-project-modal',
   templateUrl: './create-project-modal.component.html',
@@ -37,6 +38,38 @@ export class CreateProjectModalComponent implements OnInit {
     } else {
       alert('The form is invalid');
     }
+  }
+
+  addProjectToModel(projectId: string) {
+    this.projectsService
+      .getProjectById(projectId)
+      .pipe(
+        tap((res) => {
+          let project: Project = res.data;
+
+          this.model = {
+            id: project.id,
+            name: project.name,
+            description: project.description,
+            ticketsPrefix: project.ticketsPrefix,
+            ownerId: project.ownerId,
+            startDate: project.startDate,
+            completionDate: project.completionDate,
+            stateId: project.state.id,
+            groupId: project.group.id,
+            assignedTagsId: project.assignedTags.map((tag) => tag.id),
+          };
+
+          this.inputTagName = '';
+          this.assignedTagsList = project.assignedTags.map((tag) => ({
+            id: tag.id,
+            name: tag.name,
+            colorHexCode: tag.colorHexCode,
+            groupId: '',
+          }));
+        })
+      )
+      .subscribe();
   }
 
   clearModel(): void {
