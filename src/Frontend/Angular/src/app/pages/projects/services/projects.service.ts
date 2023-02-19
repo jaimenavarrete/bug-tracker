@@ -35,4 +35,9 @@ export class ProjectsService {
   createProject(project: CreateProject): Observable<ApiResponse<string>> {
     return this.http.post<ApiResponse<string>>(this.apiURL, project);
   }
+
+  updateProject(project: CreateProject): Observable<any> {
+    const url = `${this.apiURL}/${project.id}`;
+    return this.http.put(url, project);
+  }
 }

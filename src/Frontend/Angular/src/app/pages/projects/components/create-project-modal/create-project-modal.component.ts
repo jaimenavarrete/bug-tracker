@@ -34,6 +34,12 @@ export class CreateProjectModalComponent implements OnInit {
   onSubmit({ valid: isValid }: NgForm) {
     if (isValid) {
       this.isLoading = true;
+
+      if (this.model.id) {
+        this.updateProject(this.model);
+        return;
+      }
+
       this.createProject(this.model);
     } else {
       alert('The form is invalid');
@@ -90,7 +96,7 @@ export class CreateProjectModalComponent implements OnInit {
     this.assignedTagsList = [];
   }
 
-  private createProject(project: CreateProject) {
+  private createProject(project: CreateProject): void {
     this.projectsService
       .createProject(project)
       .pipe(
@@ -99,7 +105,22 @@ export class CreateProjectModalComponent implements OnInit {
 
           this.projectsService.projectsListSubjectUpdate();
           this.closeCreateProjectModal();
-          this.showCompletionAlert();
+          this.showCompletionAlert('The project was created successfully!');
+        })
+      )
+      .subscribe();
+  }
+
+  private updateProject(project: CreateProject): void {
+    this.projectsService
+      .updateProject(project)
+      .pipe(
+        tap(() => {
+          this.clearModel();
+
+          this.projectsService.projectsListSubjectUpdate();
+          this.closeCreateProjectModal();
+          this.showCompletionAlert('The project was edited successfully!');
         })
       )
       .subscribe();
@@ -110,10 +131,10 @@ export class CreateProjectModalComponent implements OnInit {
     this.closeModalButton.nativeElement.click();
   }
 
-  private showCompletionAlert(): void {
+  private showCompletionAlert(successMessage: string): void {
     Swal.fire({
       title: 'Success!',
-      text: 'The project was created successfully!',
+      text: successMessage,
       icon: 'success',
       showCancelButton: true,
       cancelButtonText: 'Close',

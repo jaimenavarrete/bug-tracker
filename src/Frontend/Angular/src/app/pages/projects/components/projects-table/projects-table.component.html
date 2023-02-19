@@ -28,11 +28,24 @@
           >{{ project.state.name }}
         </span>
       </td>
-      <td><i class="far fa-calendar"></i> {{ project.startDate | date }}</td>
+      <td>
+        <i class="far fa-calendar"></i> {{ project.startDate | date }}
+        <ng-container *ngIf="!project.startDate">
+          <span class="no-date-badge">No date</span>
+        </ng-container>
+      </td>
       <td>
         <i class="far fa-calendar"></i> {{ project.completionDate | date }}
+        <ng-container *ngIf="!project.completionDate">
+          <span class="no-date-badge">No date</span>
+        </ng-container>
       </td>
-      <td>{{ project.group.name }}</td>
+      <td>
+        {{ project.group.name }}
+        <ng-container *ngIf="!project.group">
+          <span class="no-date-badge">No group</span>
+        </ng-container>
+      </td>
       <td>
         <span *ngFor="let tag of project.assignedTags">
           <span
@@ -41,6 +54,9 @@
             >{{ tag.name }}
           </span>
         </span>
+        <ng-container *ngIf="project.assignedTags.length === 0">
+          <span class="no-tags-badge">No tags</span>
+        </ng-container>
       </td>
       <td class="dropdown text-center">
         <button
