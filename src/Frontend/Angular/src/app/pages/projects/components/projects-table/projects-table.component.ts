@@ -9,8 +9,13 @@ import { ProjectList } from '../../interfaces/project-list.interface';
 export class ProjectsTableComponent {
   @Input() projectsList!: ProjectList[];
   @Output() btnEditProjectClick: EventEmitter<string> = new EventEmitter();
+  @Output() btnDeleteProjectClick: EventEmitter<string> = new EventEmitter();
 
   editProject(projectId: string) {
     this.btnEditProjectClick.emit(projectId);
+  }
+
+  deleteProject(projectId: string) {
+    this.btnDeleteProjectClick.emit(projectId);
   }
 }

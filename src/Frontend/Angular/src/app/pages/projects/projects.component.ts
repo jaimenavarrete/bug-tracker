@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs';
+import Swal from 'sweetalert2';
 import { GroupList } from './interfaces/group-list.interface';
 import { ProjectList } from './interfaces/project-list.interface';
 import { ProjectStateList } from './interfaces/project-state-list.interface';
@@ -29,6 +30,21 @@ export class ProjectsComponent implements OnInit {
     this.getProjectStates();
   }
 
+  deleteProjectConfirmation(projectId: string): void {
+    Swal.fire({
+      title: 'Are you sure to delete this project?',
+      text: "This action can't be undone. This will delete all the elements of the project.",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes. Delete it',
+      confirmButtonColor: '#C12A32',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteProject(projectId);
+      }
+    });
+  }
+
   private getProjects(): void {
     this.projectsService.projectsListAction$.subscribe(
       (res) => (this.projectsList = res.data)
@@ -47,5 +63,25 @@ export class ProjectsComponent implements OnInit {
       .getProjectStates()
       .pipe(tap((res) => (this.projectStatesList = res.data)))
       .subscribe();
+  }
+
+  private deleteProject(projectId: string): void {
+    this.projectsService
+      .deleteProject(projectId)
+      .pipe(
+        tap(() => {
+          this.projectsService.projectsListSubjectUpdate();
+          this.showCompletionAlert('The project was deleted successfully!');
+        })
+      )
+      .subscribe();
+  }
+
+  private showCompletionAlert(successMessage: string): void {
+    Swal.fire({
+      title: 'Success!',
+      text: successMessage,
+      icon: 'success',
+    });
   }
 }

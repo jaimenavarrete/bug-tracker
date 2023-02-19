@@ -40,4 +40,9 @@ export class ProjectsService {
     const url = `${this.apiURL}/${project.id}`;
     return this.http.put(url, project);
   }
+
+  deleteProject(projectId: string): Observable<any> {
+    const url = `${this.apiURL}/${projectId}`;
+    return this.http.delete(url);
+  }
 }
