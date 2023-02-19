@@ -7,6 +7,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/projects/projects.module').then((m) => m.ProjectsModule),
   },
+  {
+    path: 'groups',
+    loadChildren: () =>
+      import('./pages/groups/groups.module').then((m) => m.GroupsModule),
+  },
 ];
 
 @NgModule({

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectsComponent } from './projects.component';
+import { GroupsComponent } from './groups.component';
 
 const routes: Routes = [
-  { path: '', title: 'Projects | BugTracker', component: ProjectsComponent },
+  { path: '', title: 'Groups | BugTracker', component: GroupsComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ProjectsRoutingModule {}
+export class GroupsRoutingModule {}
