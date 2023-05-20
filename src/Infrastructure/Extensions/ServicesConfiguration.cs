@@ -16,7 +16,27 @@ namespace Infrastructure.Extensions
 {
     public static class ServicesConfiguration
     {
-        public static IServiceCollection AddServicesConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
+        {
+            // CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "MainCORS", builder =>
+                {
+                    // Works with internet domains
+                    //builder.WithOrigins("http://localhost");
+
+                    // Works with localhost
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             // Database
             var connectionString = configuration.GetConnectionString("BugTracker");
@@ -27,13 +47,11 @@ namespace Infrastructure.Extensions
                 .AddEntityFrameworkStores<BugTrackerContext>()
                 .AddDefaultTokenProviders();
 
-            // AutoMapper
-            services.AddAutoMapper(typeof(DependencyInjection));
+            return services;
+        }
 
-            // FluentValidation
-            services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssembly(typeof(ServicesConfiguration).Assembly);
-
+        public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
             // Authentication
             services.Configure<AuthOptions>(
                 configuration.GetSection(AuthOptions.SectionName));
@@ -49,31 +67,30 @@ namespace Infrastructure.Extensions
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidateAudience= true,
+                    ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    
+
                     ValidIssuer = authOptions.Issuer,
                     ValidAudience = authOptions.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(secretKeyAsBytes)
                 };
             });
 
-            // CORS
-            string mainCors = configuration.GetValue<string>("MainCORS");
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: mainCors, builder =>
-                {
-                    // Works with internet domains
-                    //builder.WithOrigins("http://localhost");
+            return services;
+        }
 
-                    // Works with localhost
-                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                });
-            });
+        public static IServiceCollection AddServicesConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            // AutoMapper
+            services.AddAutoMapper(typeof(DependencyInjection));
+
+            // FluentValidation
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssembly(typeof(ServicesConfiguration).Assembly);
+
+            // services.AddCorsPolicy();
+            // services.AddAuthentication(configuration);
 
             // Filters and controllers
             services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());

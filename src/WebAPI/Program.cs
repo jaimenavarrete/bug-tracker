@@ -4,20 +4,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCorsPolicy();
+builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddServicesConfiguration(builder.Configuration);
+
 builder.Services.AddDependencyInjection();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
-
-app.UseCors(builder.Configuration.GetValue<string>("MainCORS"));
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+app.AddMiddlewarePipelines();

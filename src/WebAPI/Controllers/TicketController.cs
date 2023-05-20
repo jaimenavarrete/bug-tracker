@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetTicketById(string id)
         {
             var ticket = await _ticketService.GetTicketById(id);
-            
+
             if (ticket is null)
                 throw new EntityNotFoundException(nameof(Ticket), id);
 
