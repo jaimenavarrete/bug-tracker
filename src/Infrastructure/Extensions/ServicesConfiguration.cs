@@ -53,8 +53,7 @@ namespace Infrastructure.Extensions
         public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             // Authentication
-            services.Configure<AuthOptions>(
-                configuration.GetSection(AuthOptions.SectionName));
+            services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.SectionName));
             var authOptions = configuration.GetSection(AuthOptions.SectionName).Get<AuthOptions>();
             var secretKeyAsBytes = Encoding.UTF8.GetBytes(authOptions.SecretKey);
 
@@ -88,9 +87,6 @@ namespace Infrastructure.Extensions
             // FluentValidation
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssembly(typeof(ServicesConfiguration).Assembly);
-
-            // services.AddCorsPolicy();
-            // services.AddAuthentication(configuration);
 
             // Filters and controllers
             services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());

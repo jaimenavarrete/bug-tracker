@@ -29,7 +29,7 @@ namespace Infrastructure.Filters
                 response.Status = (int)HttpStatusCode.BadRequest;
                 response.Title = "Bad request";
             }
-            else if(exceptionType == typeof(EntityNotFoundException))
+            else if (exceptionType == typeof(EntityNotFoundException))
             {
                 response.Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.4";
                 response.Status = (int)HttpStatusCode.NotFound;

@@ -32,7 +32,7 @@ namespace Application.Services
         public async Task UpdateProject(Project project)
         {
             var userId = Guid.NewGuid().ToString();
-            
+
             var currentProject = await _unitOfWork.ProjectRepository.GetById(project.Id);
 
             if (currentProject is null)
@@ -67,20 +67,32 @@ namespace Application.Services
 
         private async Task ValidateEntityValues(Project project)
         {
+            await ValidateProjectGroup(project);
+            await ValidateProjectState(project);
+            await ValidateProjectTags(project);
+        }
+
+        private async Task ValidateProjectGroup(Project project)
+        {
             var group = await _unitOfWork.GroupRepository.GetById(project.GroupId ?? string.Empty);
 
             if (group is null && project.GroupId is not null)
                 throw new EntityValueNotFoundException(nameof(Group), project.GroupId);
+        }
 
+        private async Task ValidateProjectState(Project project)
+        {
             var state = await _unitOfWork.ProjectStateRepository.GetById(project.StateId);
 
             if (state is null)
                 throw new EntityValueNotFoundException(nameof(ProjectState), project.StateId);
 
-            if(state.GroupId != project.GroupId)
+            if (state.GroupId != project.GroupId)
                 throw new InvalidEntityValueException(nameof(ProjectState), state.Id, nameof(Project), nameof(Group));
+        }
 
-            // Validate project tags
+        private async Task ValidateProjectTags(Project project)
+        {
             // The list is necessary to save the tags that are retrieved from database
             var tags = new List<ProjectTag>();
 
