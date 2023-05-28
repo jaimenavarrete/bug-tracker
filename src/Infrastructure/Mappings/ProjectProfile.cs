@@ -9,8 +9,7 @@ namespace Infrastructure.Mappings
     {
         public ProjectProfile()
         {
-            CreateMap<Project, ProjectMiniResponseDto>()
-                .ForMember(dest => dest.AssignedTags, opt => opt.MapFrom(src => src.Tags));
+            CreateMap<Project, ProjectMiniResponseDto>();
             CreateMap<Project, ProjectResponseDto>()
                 .ForMember(dest => dest.AssignedTags, opt => opt.MapFrom(src => src.Tags));
             CreateMap<ProjectRequestDto, Project>()

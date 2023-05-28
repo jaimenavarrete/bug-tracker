@@ -41,7 +41,5 @@ namespace Application.DTOs.Response
         public DateTime? CompletionDate { get; set; }
 
         public GroupMiniResponseDto? Group { get; set; }
-
-        public IEnumerable<StateAndTagMiniResponseDto> AssignedTags { get; set; } = null!;
     }
 }

@@ -15,13 +15,9 @@ namespace Infrastructure.Repositories
             await GetProjectsQuery().ToListAsync() ?? Enumerable.Empty<Project>();
 
         public override async Task<Project?> GetById(string id) =>
-            await GetProjectsQuery().FirstOrDefaultAsync(p => p.Id == id);
+            await GetProjectsQuery().Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
 
         private IQueryable<Project> GetProjectsQuery()
-        {
-            return _entity.Include(t => t.State)
-                .Include(t => t.Group)
-                .Include(t => t.Tags);
-        }
+            => _entity.Include(p => p.State).Include(p => p.Group);
     }
 }

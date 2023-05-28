@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
 
             var response = new ApiResponse<CreationResponseDto>(responseDto);
 
-            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{group?.Id}", response);
+            return CreatedAtAction(nameof(GetGroupById), new { id = group.Id }, response);
         }
 
         [HttpPut("{id}")]

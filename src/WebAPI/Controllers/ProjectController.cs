@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetProjectById(string id)
         {
             var project = await _projectService.GetProjectById(id);
-            
+
             if (project is null)
                 throw new EntityNotFoundException(nameof(Project), id);
 
@@ -52,14 +52,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> InsertProject(ProjectRequestDto projectDto)
         {
             var project = _mapper.Map<Project>(projectDto);
-            
+
             await _projectService.InsertProject(project);
-            
+
             var responseDto = new CreationResponseDto(project.Id);
 
             var response = new ApiResponse<CreationResponseDto>(responseDto);
 
-            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{project.Id}", response);
+            return CreatedAtAction(nameof(GetProjectById), new { id = project.Id }, response);
         }
 
         [HttpPut("{id}")]
