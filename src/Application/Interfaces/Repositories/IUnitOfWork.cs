@@ -7,7 +7,7 @@ namespace Application.Interfaces.Repositories
     {
         IBaseRepository<Group> GroupRepository { get; }
 
-        IBaseRepository<Project> ProjectRepository { get; }
+        IProjectRepository ProjectRepository { get; }
 
         IBaseRepository<ProjectState> ProjectStateRepository { get; }
 

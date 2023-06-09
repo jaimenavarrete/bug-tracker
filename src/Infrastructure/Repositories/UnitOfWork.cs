@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly IBaseRepository<Group> _groupRepository = null!;
-        private readonly IBaseRepository<Project> _projectRepository = null!;
+        private readonly IProjectRepository _projectRepository = null!;
         private readonly IBaseRepository<Ticket> _ticketRepository = null!;
         private readonly IBaseRepository<ProjectState> _projectStateRepository = null!;
         private readonly IBaseRepository<ProjectTag> _projectTagRepository = null!;
@@ -31,7 +31,7 @@ namespace Infrastructure.Repositories
 
         public IBaseRepository<Group> GroupRepository => _groupRepository ?? new BaseRepository<Group>(_context);
 
-        public IBaseRepository<Project> ProjectRepository => _projectRepository ?? new ProjectRepository(_context);
+        public IProjectRepository ProjectRepository => _projectRepository ?? new ProjectRepository(_context);
 
         public IBaseRepository<ProjectState> ProjectStateRepository => _projectStateRepository ?? new BaseRepository<ProjectState>(_context);
 
@@ -51,7 +51,7 @@ namespace Infrastructure.Repositories
 
         public void Dispose()
         {
-            if (_context is null) 
+            if (_context is null)
                 return;
 
             _context.Dispose();

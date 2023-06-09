@@ -67,9 +67,26 @@ namespace Application.Services
 
         private async Task ValidateEntityValues(Project project)
         {
+            await ValidateTicketsPrefix(project);
             await ValidateProjectGroup(project);
             await ValidateProjectState(project);
             await ValidateProjectTags(project);
+        }
+
+        private async Task ValidateTicketsPrefix(Project project)
+        {
+            var existingProject =
+                await _unitOfWork.ProjectRepository.GetByTicketsPrefix(project.TicketsPrefix);
+
+            if (existingProject is not null &&
+               existingProject.Id != project.Id &&
+               existingProject.GroupId == project.GroupId
+               )
+                throw new DuplicateValueException(
+                    "TicketsPrefix",
+                    project.TicketsPrefix,
+                    project.GroupId ?? "[Empty]"
+                    );
         }
 
         private async Task ValidateProjectGroup(Project project)
