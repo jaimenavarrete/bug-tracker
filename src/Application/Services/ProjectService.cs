@@ -68,7 +68,7 @@ namespace Application.Services
         private async Task ValidateEntityValues(Project project)
         {
             await ValidateTicketsPrefix(project);
-            await ValidateProjectGroup(project);
+            await ValidateGroup(project);
             await ValidateProjectState(project);
             await ValidateProjectTags(project);
         }
@@ -89,7 +89,7 @@ namespace Application.Services
                     );
         }
 
-        private async Task ValidateProjectGroup(Project project)
+        private async Task ValidateGroup(Project project)
         {
             var group = await _unitOfWork.GroupRepository.GetById(project.GroupId ?? string.Empty);
 

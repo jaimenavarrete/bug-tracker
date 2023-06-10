@@ -67,11 +67,21 @@ namespace Application.Services
 
         private async Task ValidateEntityValues(Ticket ticket)
         {
+            await ValidateProject(ticket);
+            await ValidateTicketState(ticket);
+            await ValidateTicketTags(ticket);
+        }
+
+        private async Task ValidateProject(Ticket ticket)
+        {
             var project = await _unitOfWork.ProjectRepository.GetById(ticket.ProjectId);
 
             if (project is null)
                 throw new EntityValueNotFoundException(nameof(Project), ticket.ProjectId);
+        }
 
+        private async Task ValidateTicketState(Ticket ticket)
+        {
             var state = await _unitOfWork.TicketStateRepository.GetById(ticket.StateId);
 
             if (state is null)
@@ -79,8 +89,10 @@ namespace Application.Services
 
             if (state.ProjectId != ticket.ProjectId)
                 throw new InvalidEntityValueException(nameof(TicketState), state.Id, nameof(Ticket), nameof(Project));
+        }
 
-            // Validate ticket tags
+        private async Task ValidateTicketTags(Ticket ticket)
+        {
             // The list is necessary to save the tags that are retrieved from database
             var tags = new List<TicketTag>();
 
@@ -100,5 +112,6 @@ namespace Application.Services
             // Replace the list that has incomplete ticket tags to be able to save the project in database
             ticket.Tags = tags;
         }
+
     }
 }
