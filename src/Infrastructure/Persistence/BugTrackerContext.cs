@@ -18,13 +18,13 @@ namespace Infrastructure.Persistence
 
         public virtual DbSet<ActionType> ActionTypes { get; set; } = null!;
         public virtual DbSet<ActivityFlow> ActivityFlows { get; set; } = null!;
-        public virtual DbSet<Classification> Classifications { get; set; } = null!;
-        public virtual DbSet<GravityLevel> GravityLevels { get; set; } = null!;
         public virtual DbSet<Group> Groups { get; set; } = null!;
         public virtual DbSet<ItemType> ItemTypes { get; set; } = null!;
         public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<ProjectState> ProjectStates { get; set; } = null!;
         public virtual DbSet<ProjectTag> ProjectTags { get; set; } = null!;
+        public virtual DbSet<Classification> Classifications { get; set; } = null!;
+        public virtual DbSet<GravityLevel> GravityLevels { get; set; } = null!;
         public virtual DbSet<ReproducibilityLevel> ReproducibilityLevels { get; set; } = null!;
         public virtual DbSet<Ticket> Tickets { get; set; } = null!;
         public virtual DbSet<TicketState> TicketStates { get; set; } = null!;
@@ -62,16 +62,6 @@ namespace Infrastructure.Persistence
                     .HasForeignKey(d => d.ItemTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ActivityEntities_ActivityFlow");
-            });
-
-            modelBuilder.Entity<Classification>(entity =>
-            {
-                entity.Property(e => e.Name).HasMaxLength(25);
-            });
-
-            modelBuilder.Entity<GravityLevel>(entity =>
-            {
-                entity.Property(e => e.Name).HasMaxLength(25);
             });
 
             modelBuilder.Entity<Group>(entity =>
@@ -209,6 +199,16 @@ namespace Infrastructure.Persistence
                 entity.Property(e => e.Name).HasMaxLength(25);
             });
 
+            modelBuilder.Entity<Classification>(entity =>
+            {
+                entity.Property(e => e.Name).HasMaxLength(25);
+            });
+
+            modelBuilder.Entity<GravityLevel>(entity =>
+            {
+                entity.Property(e => e.Name).HasMaxLength(25);
+            });
+
             modelBuilder.Entity<Ticket>(entity =>
             {
                 entity.Property(e => e.Id).HasMaxLength(36);
@@ -245,15 +245,15 @@ namespace Infrastructure.Persistence
                     .HasForeignKey(d => d.GravityId)
                     .HasConstraintName("FK_GravityLevels_Tickets");
 
-                entity.HasOne(d => d.Project)
-                    .WithMany(p => p.Tickets)
-                    .HasForeignKey(d => d.ProjectId)
-                    .HasConstraintName("FK_Projects_Tickets");
-
                 entity.HasOne(d => d.Reproducibility)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.ReproducibilityId)
                     .HasConstraintName("FK_ReproducibilityLevels_Tickets");
+
+                entity.HasOne(d => d.Project)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.ProjectId)
+                    .HasConstraintName("FK_Projects_Tickets");
 
                 entity.HasOne(d => d.State)
                     .WithMany(p => p.Tickets)

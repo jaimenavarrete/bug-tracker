@@ -22,6 +22,9 @@ namespace Infrastructure.Repositories
         private readonly IBaseRepository<TicketState> _ticketStateRepository = null!;
         private readonly IBaseRepository<TicketTag> _ticketTagRepository = null!;
         private readonly IUserRepository _userRepository = null!;
+        private readonly ILookupBaseRepository<GravityLevel> _gravityLevelRepository = null!;
+        private readonly ILookupBaseRepository<Classification> _classificationRepository = null!;
+        private readonly ILookupBaseRepository<ReproducibilityLevel> _reproducibilityLevelRepository = null!;
 
         public UnitOfWork(BugTrackerContext context, UserManager<ApplicationUser> userManager)
         {
@@ -29,21 +32,38 @@ namespace Infrastructure.Repositories
             _userManager = userManager;
         }
 
-        public IBaseRepository<Group> GroupRepository => _groupRepository ?? new BaseRepository<Group>(_context);
+        public IBaseRepository<Group> GroupRepository
+            => _groupRepository ?? new BaseRepository<Group>(_context);
 
-        public IProjectRepository ProjectRepository => _projectRepository ?? new ProjectRepository(_context);
+        public IProjectRepository ProjectRepository
+            => _projectRepository ?? new ProjectRepository(_context);
 
-        public IBaseRepository<ProjectState> ProjectStateRepository => _projectStateRepository ?? new BaseRepository<ProjectState>(_context);
+        public IBaseRepository<ProjectState> ProjectStateRepository
+            => _projectStateRepository ?? new BaseRepository<ProjectState>(_context);
 
-        public IBaseRepository<ProjectTag> ProjectTagRepository => _projectTagRepository ?? new BaseRepository<ProjectTag>(_context);
+        public IBaseRepository<ProjectTag> ProjectTagRepository
+            => _projectTagRepository ?? new BaseRepository<ProjectTag>(_context);
 
-        public IBaseRepository<Ticket> TicketRepository => _ticketRepository ?? new TicketRepository(_context);
+        public IBaseRepository<Ticket> TicketRepository
+            => _ticketRepository ?? new TicketRepository(_context);
 
-        public IBaseRepository<TicketState> TicketStateRepository => _ticketStateRepository ?? new BaseRepository<TicketState>(_context);
+        public IBaseRepository<TicketState> TicketStateRepository
+            => _ticketStateRepository ?? new BaseRepository<TicketState>(_context);
 
-        public IBaseRepository<TicketTag> TicketTagRepository => _ticketTagRepository ?? new BaseRepository<TicketTag>(_context);
+        public IBaseRepository<TicketTag> TicketTagRepository
+            => _ticketTagRepository ?? new BaseRepository<TicketTag>(_context);
 
-        public IUserRepository UserRepository => _userRepository ?? new UserRepository(_context, _userManager);
+        public IUserRepository UserRepository
+            => _userRepository ?? new UserRepository(_context, _userManager);
+
+        public ILookupBaseRepository<GravityLevel> GravityLevelRepository
+                => _gravityLevelRepository ?? new LookupBaseRepository<GravityLevel>(_context);
+
+        public ILookupBaseRepository<Classification> ClassificationRepository
+                => _classificationRepository ?? new LookupBaseRepository<Classification>(_context);
+
+        public ILookupBaseRepository<ReproducibilityLevel> ReproducibilityLevelRepository
+                => _reproducibilityLevelRepository ?? new LookupBaseRepository<ReproducibilityLevel>(_context);
 
         public bool Complete() => _context.SaveChanges() > 0;
 

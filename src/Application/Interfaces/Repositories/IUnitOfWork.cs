@@ -21,6 +21,12 @@ namespace Application.Interfaces.Repositories
 
         IUserRepository UserRepository { get; }
 
+        ILookupBaseRepository<GravityLevel> GravityLevelRepository { get; }
+
+        ILookupBaseRepository<Classification> ClassificationRepository { get; }
+
+        ILookupBaseRepository<ReproducibilityLevel> ReproducibilityLevelRepository { get; }
+
         bool Complete();
 
         Task<bool> CompleteAsync();
