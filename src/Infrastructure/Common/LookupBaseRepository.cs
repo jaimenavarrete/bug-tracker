@@ -15,6 +15,6 @@ namespace Infrastructure.Common
 
         public async Task<IEnumerable<T>> GetAll() => await _entity.ToListAsync();
 
-        public async Task<T?> GetById(string id) => await _entity.FindAsync(id);
+        public async Task<T?> GetById(int id) => await _entity.FindAsync(id);
     }
 }

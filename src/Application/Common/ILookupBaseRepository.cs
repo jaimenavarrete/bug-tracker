@@ -4,7 +4,7 @@ namespace Application.Common
     {
         Task<IEnumerable<T>> GetAll();
 
-        Task<T?> GetById(string id);
+        Task<T?> GetById(int id);
 
     }
 }
