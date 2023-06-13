@@ -10,7 +10,7 @@ using WebAPI.Responses;
 
 namespace WebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/tickets")]
     [ApiController]
     public class TicketController : ControllerBase
@@ -73,6 +73,15 @@ namespace WebAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}/completion")]
+        public async Task<IActionResult> SetTicketCompletion(string id, SetTicketCompletionRequestDto completionDto)
+        {
+            await _ticketService.SetTicketCompletion(id, completionDto.IsCompleted);
+
+            return NoContent();
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicket(string id)

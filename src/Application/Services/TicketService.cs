@@ -31,6 +31,7 @@ namespace Application.Services
 
         public async Task UpdateTicket(Ticket ticket)
         {
+            var userId = Guid.NewGuid().ToString();
             var currentTicket = await _unitOfWork.TicketRepository.GetById(ticket.Id);
 
             if (currentTicket is null)
@@ -49,7 +50,21 @@ namespace Application.Services
             currentTicket.ReproducibilityId = ticket.ReproducibilityId;
             currentTicket.ClassificationId = ticket.ClassificationId;
             currentTicket.ProjectId = ticket.ProjectId;
-            currentTicket.IsCompleted = ticket.IsCompleted;
+            currentTicket.UpdateModificationInfo(userId);
+
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task SetTicketCompletion(string id, bool isCompleted)
+        {
+            var userId = Guid.NewGuid().ToString();
+            var currentTicket = await _unitOfWork.TicketRepository.GetById(id);
+
+            if (currentTicket is null)
+                throw new EntityNotFoundException(nameof(Ticket), id);
+
+            currentTicket.IsCompleted = isCompleted;
+            currentTicket.UpdateModificationInfo(userId);
 
             await _unitOfWork.CompleteAsync();
         }

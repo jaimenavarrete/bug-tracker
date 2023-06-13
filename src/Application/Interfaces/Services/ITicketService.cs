@@ -12,6 +12,8 @@ namespace Application.Interfaces.Services
 
         Task UpdateTicket(Ticket ticket);
 
+        Task SetTicketCompletion(string id, bool isCompleted);
+
         Task DeleteTicket(string id);
     }
 }

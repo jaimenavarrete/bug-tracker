@@ -28,7 +28,5 @@
         public int? ClassificationId { get; set; }
 
         public string? ProjectId { get; set; }
-
-        public bool IsCompleted { get; set; }
     }
 }
