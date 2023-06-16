@@ -1,5 +1,4 @@
 ﻿using Application.Common;
-using Domain.Entities;
 
 namespace Application.DTOs.Response
 {
@@ -21,6 +20,10 @@ namespace Application.DTOs.Response
 
         public GroupMiniResponseDto? Group { get; set; }
 
+        public int CompletedTicketsCount { get; set; }
+
+        public int PendingTicketsCount { get; set; }
+
         public IEnumerable<StateAndTagMiniResponseDto> AssignedTags { get; set; } = null!;
     }
 
@@ -41,5 +44,9 @@ namespace Application.DTOs.Response
         public DateTime? CompletionDate { get; set; }
 
         public GroupMiniResponseDto? Group { get; set; }
+
+        public int CompletedTicketsCount { get; set; }
+
+        public int PendingTicketsCount { get; set; }
     }
 }

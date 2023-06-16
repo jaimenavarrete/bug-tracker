@@ -114,6 +114,10 @@ namespace Infrastructure.Persistence
 
                 entity.Property(e => e.TicketsPrefix).HasMaxLength(4);
 
+                // Ignored columns
+                entity.Ignore(e => e.CompletedTicketsCount);
+                entity.Ignore(e => e.PendingTicketsCount);
+
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.Projects)
                     .HasForeignKey(d => d.GroupId)

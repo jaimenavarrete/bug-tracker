@@ -9,13 +9,13 @@
 
         public string Id { get; set; }
 
-        public DateTime CreationDate { get; private set; }
+        public DateTime CreationDate { get; set; }
 
-        public string CreatedBy { get; private set; } = null!;
+        public string CreatedBy { get; set; } = null!;
 
-        public DateTime? LastModificationDate { get; private set; }
+        public DateTime? LastModificationDate { get; set; }
 
-        public string? ModifiedBy { get; private set; }
+        public string? ModifiedBy { get; set; }
 
         public bool AddCreationInfo(string userId)
         {

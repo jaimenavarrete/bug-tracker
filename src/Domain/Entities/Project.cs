@@ -28,6 +28,10 @@ namespace Domain.Entities
 
         public string? GroupId { get; set; }
 
+        public int CompletedTicketsCount { get; set; }
+
+        public int PendingTicketsCount { get; set; }
+
 
         public Group? Group { get; set; }
 
