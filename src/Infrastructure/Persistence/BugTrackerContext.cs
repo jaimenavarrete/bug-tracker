@@ -74,55 +74,9 @@ namespace Infrastructure.Persistence
 
             modelBuilder.ApplyConfiguration(new ProjectConfiguration());
 
-            modelBuilder.Entity<ProjectState>(entity =>
-            {
-                entity.Property(e => e.Id).HasMaxLength(36);
+            modelBuilder.ApplyConfiguration(new ProjectStateConfiguration());
 
-                entity.Property(e => e.ColorHexCode).HasMaxLength(7);
-
-                entity.Property(e => e.CreatedBy).HasMaxLength(36);
-
-                entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.GroupId).HasMaxLength(36);
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedBy).HasMaxLength(36);
-
-                entity.Property(e => e.Name).HasMaxLength(25);
-
-                entity.HasOne(d => d.Group)
-                    .WithMany(p => p.ProjectStates)
-                    .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK_Groups_ProjectStates");
-            });
-
-            modelBuilder.Entity<ProjectTag>(entity =>
-            {
-                entity.Property(e => e.Id).HasMaxLength(36);
-
-                entity.Property(e => e.ColorHexCode).HasMaxLength(7);
-
-                entity.Property(e => e.CreatedBy).HasMaxLength(36);
-
-                entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.GroupId).HasMaxLength(36);
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedBy).HasMaxLength(36);
-
-                entity.Property(e => e.Name).HasMaxLength(25);
-
-                entity.HasOne(d => d.Group)
-                    .WithMany(p => p.ProjectTags)
-                    .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK_Groups_ProjectTags");
-            });
+            modelBuilder.ApplyConfiguration(new ProjectTagConfiguration());
 
             modelBuilder.Entity<ReproducibilityLevel>(entity =>
             {
@@ -193,20 +147,7 @@ namespace Infrastructure.Persistence
             // IDENTITY
             //**********************************************************************************************
 
-            modelBuilder.Entity<ApplicationUser>(entity =>
-            {
-                entity.Property(e => e.FirstName).HasMaxLength(50);
-
-                entity.Property(e => e.LastName).HasMaxLength(50);
-
-                entity.Property(e => e.Biography).HasMaxLength(1000);
-
-                entity.Property(e => e.BirthDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Address).HasMaxLength(100);
-
-                entity.Property(e => e.ProfileImageUrl).HasMaxLength(100);
-            });
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }
