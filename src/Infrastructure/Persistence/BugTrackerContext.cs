@@ -17,10 +17,7 @@ namespace Infrastructure.Persistence
         {
         }
 
-        public virtual DbSet<ActionType> ActionTypes { get; set; } = null!;
-        public virtual DbSet<ActivityFlow> ActivityFlows { get; set; } = null!;
         public virtual DbSet<Group> Groups { get; set; } = null!;
-        public virtual DbSet<ItemType> ItemTypes { get; set; } = null!;
         public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<ProjectState> ProjectStates { get; set; } = null!;
         public virtual DbSet<ProjectTag> ProjectTags { get; set; } = null!;
@@ -34,41 +31,6 @@ namespace Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<ActionType>(entity =>
-            {
-                entity.Property(e => e.Name).HasMaxLength(25);
-            });
-
-            modelBuilder.Entity<ActivityFlow>(entity =>
-            {
-                entity.ToTable("ActivityFlow");
-
-                entity.Property(e => e.Id).HasMaxLength(36);
-
-                entity.Property(e => e.ActionDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ItemId).HasMaxLength(36);
-
-                entity.Property(e => e.UserId).HasMaxLength(36);
-
-                entity.HasOne(d => d.ActionType)
-                    .WithMany(p => p.ActivityFlows)
-                    .HasForeignKey(d => d.ActionTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ActivityTypes_ActivityFlow");
-
-                entity.HasOne(d => d.ItemType)
-                    .WithMany(p => p.ActivityFlows)
-                    .HasForeignKey(d => d.ItemTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ActivityEntities_ActivityFlow");
-            });
-
-            modelBuilder.Entity<ItemType>(entity =>
-            {
-                entity.Property(e => e.Name).HasMaxLength(25);
-            });
 
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
 
