@@ -78,6 +78,12 @@ namespace Infrastructure.Persistence
 
             modelBuilder.ApplyConfiguration(new ProjectTagConfiguration());
 
+            modelBuilder.ApplyConfiguration(new TicketConfiguration());
+
+            modelBuilder.ApplyConfiguration(new TicketStateConfiguration());
+
+            modelBuilder.ApplyConfiguration(new TicketTagConfiguration());
+
             modelBuilder.Entity<ReproducibilityLevel>(entity =>
             {
                 entity.Property(e => e.Name).HasMaxLength(25);
@@ -91,56 +97,6 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<GravityLevel>(entity =>
             {
                 entity.Property(e => e.Name).HasMaxLength(25);
-            });
-
-            modelBuilder.ApplyConfiguration(new TicketConfiguration());
-
-            modelBuilder.Entity<TicketState>(entity =>
-            {
-                entity.Property(e => e.Id).HasMaxLength(36);
-
-                entity.Property(e => e.ColorHexCode).HasMaxLength(7);
-
-                entity.Property(e => e.CreatedBy).HasMaxLength(36);
-
-                entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedBy).HasMaxLength(36);
-
-                entity.Property(e => e.Name).HasMaxLength(25);
-
-                entity.Property(e => e.ProjectId).HasMaxLength(36);
-
-                entity.HasOne(d => d.Project)
-                    .WithMany(p => p.TicketStates)
-                    .HasForeignKey(d => d.ProjectId)
-                    .HasConstraintName("FK_Projects_TicketStates");
-            });
-
-            modelBuilder.Entity<TicketTag>(entity =>
-            {
-                entity.Property(e => e.Id).HasMaxLength(36);
-
-                entity.Property(e => e.ColorHexCode).HasMaxLength(7);
-
-                entity.Property(e => e.CreatedBy).HasMaxLength(36);
-
-                entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.LastModificationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifiedBy).HasMaxLength(36);
-
-                entity.Property(e => e.Name).HasMaxLength(25);
-
-                entity.Property(e => e.ProjectId).HasMaxLength(36);
-
-                entity.HasOne(d => d.Project)
-                    .WithMany(p => p.TicketTags)
-                    .HasForeignKey(d => d.ProjectId)
-                    .HasConstraintName("FK_Projects_TicketTags");
             });
 
             //**********************************************************************************************
