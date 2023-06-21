@@ -20,7 +20,13 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetAll() => await GetUsersQuery().ToListAsync();
 
-        public async Task<User?> GetById(string id) => await GetUsersQuery().FirstOrDefaultAsync(u => u.Id == id);
+        public async Task<User?> GetById(string id)
+        {
+            var appUser = await _userManager.FindByIdAsync(id);
+            var user = MapUserFromApplicationUser(appUser);
+
+            return user;
+        }
 
         public async Task<User?> GetByCredentials(string email, string password)
         {
