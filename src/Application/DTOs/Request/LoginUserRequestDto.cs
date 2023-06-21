@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.Request
 {
-    public class UserLoginRequestDto
+    public class LoginUserRequestDto
     {
         public string Email { get; set; } = null!;
 

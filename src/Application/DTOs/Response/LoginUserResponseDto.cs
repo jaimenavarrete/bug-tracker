@@ -1,8 +1,8 @@
 ﻿namespace Application.DTOs.Response
 {
-    public class UserLoginResponseDto
+    public class LoginUserResponseDto
     {
-        public UserLoginResponseDto(string token)
+        public LoginUserResponseDto(string token)
         {
             Token = token;
         }
