@@ -93,5 +93,17 @@ namespace Infrastructure.Extensions
 
             return services;
         }
+
+        public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHealthChecks()
+                .AddSqlServer(
+                    configuration.GetConnectionString("BugTracker"),
+                    name: "sqlserver",
+                    timeout: TimeSpan.FromSeconds(5),
+                    tags: new[] { "ready" });
+
+            return services;
+        }
     }
 }

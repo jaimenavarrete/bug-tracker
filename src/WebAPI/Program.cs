@@ -8,6 +8,7 @@ builder.Services.AddCorsPolicy();
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddServicesConfiguration(builder.Configuration);
+builder.Services.AddHealthChecks(builder.Configuration);
 
 builder.Services.AddDependencyInjection();
 
