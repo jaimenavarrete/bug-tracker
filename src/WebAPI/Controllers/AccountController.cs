@@ -33,6 +33,9 @@ namespace WebAPI.Controllers
             var userId = GetUserIdFromToken();
             var user = await _userService.GetUserById(userId);
 
+            if (user is null)
+                throw new EntityNotFoundException(nameof(User), userId);
+
             var userDto = _mapper.Map<UserResponseDto>(user);
 
             var response = new ApiResponse<UserResponseDto>(userDto);
@@ -73,7 +76,10 @@ namespace WebAPI.Controllers
                 throw new AuthenticationException("There was a problem trying to get the current user information.");
 
             var userClaims = identity.Claims;
-            var userId = userClaims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var userId = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId is null)
+                throw new AuthenticationException("There was a problem trying to get the current user information.");
 
             return userId;
         }

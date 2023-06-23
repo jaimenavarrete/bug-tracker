@@ -23,20 +23,17 @@ namespace Infrastructure.Repositories
         public async Task<User?> GetById(string id)
         {
             var appUser = await _userManager.FindByIdAsync(id);
-            var user = MapUserFromApplicationUser(appUser);
 
-            return user;
+            return appUser is not null ? MapUserFromApplicationUser(appUser) : null;
         }
 
         public async Task<User?> GetByCredentials(string email, string password)
         {
-            var appUser = await _userManager.FindByEmailAsync(email);
+            var appUser = await _userManager.FindByEmailAsync(email) ?? new ApplicationUser();
+
             var result = await _userManager.CheckPasswordAsync(appUser, password);
 
-
-            var user = MapUserFromApplicationUser(appUser);
-
-            return result ? user : null;
+            return result ? MapUserFromApplicationUser(appUser) : null;
         }
 
         public async Task Create(User user)
