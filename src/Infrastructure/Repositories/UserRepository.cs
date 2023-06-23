@@ -33,6 +33,7 @@ namespace Infrastructure.Repositories
             var appUser = await _userManager.FindByEmailAsync(email);
             var result = await _userManager.CheckPasswordAsync(appUser, password);
 
+
             var user = MapUserFromApplicationUser(appUser);
 
             return result ? user : null;
@@ -55,6 +56,12 @@ namespace Infrastructure.Repositories
             };
 
             await _userManager.CreateAsync(appUser, user.Password);
+        }
+
+        public async Task Delete(User user)
+        {
+            var appUser = await _userManager.FindByIdAsync(user.Id);
+            await _userManager.DeleteAsync(appUser);
         }
 
         private IQueryable<User> GetUsersQuery() => _context.Users.Select(u => MapUserFromApplicationUser(u));

@@ -13,6 +13,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/account")]
     [ApiController]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -26,17 +27,12 @@ namespace WebAPI.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetLoggedUser()
         {
-            if (HttpContext.User.Identity is not ClaimsIdentity identity)
-                throw new AuthenticationException("There was a problem trying to get the current user information.");
-
-            var userClaims = identity.Claims;
-            var userId = userClaims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
+            var userId = GetUserIdFromToken();
             var user = await _userService.GetUserById(userId);
+
             var userDto = _mapper.Map<UserResponseDto>(user);
 
             var response = new ApiResponse<UserResponseDto>(userDto);
@@ -44,7 +40,17 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser()
+        {
+            var userId = GetUserIdFromToken();
+            await _userService.DeleteUser(userId);
+
+            return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
         public async Task<IActionResult> LoginUser(LoginUserRequestDto loginUser)
         {
             var user = await _userService.GetUserByCredentials(loginUser.Email, loginUser.Password);
@@ -59,6 +65,17 @@ namespace WebAPI.Controllers
             var response = new ApiResponse<LoginUserResponseDto>(tokenDto);
 
             return Ok(response);
+        }
+
+        private string GetUserIdFromToken()
+        {
+            if (HttpContext.User.Identity is not ClaimsIdentity identity)
+                throw new AuthenticationException("There was a problem trying to get the current user information.");
+
+            var userClaims = identity.Claims;
+            var userId = userClaims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+            return userId;
         }
     }
 }

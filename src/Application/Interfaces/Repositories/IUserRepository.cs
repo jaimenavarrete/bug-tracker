@@ -11,5 +11,7 @@ namespace Application.Interfaces.Repositories
         Task<User?> GetByCredentials(string email, string password);
 
         Task Create(User user);
+
+        Task Delete(User user);
     }
 }

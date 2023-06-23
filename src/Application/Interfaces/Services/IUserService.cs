@@ -11,5 +11,7 @@ namespace Application.Interfaces.Services
         Task<User?> GetUserByCredentials(string email, string password);
 
         Task CreateUser(User user);
+
+        Task DeleteUser(string id);
     }
 }
