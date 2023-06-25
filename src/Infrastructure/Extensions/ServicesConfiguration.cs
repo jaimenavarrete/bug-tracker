@@ -42,17 +42,11 @@ namespace Infrastructure.Extensions
             var connectionString = configuration.GetConnectionString("BugTracker");
             services.AddDbContext<BugTrackerContext>(options => options.UseSqlServer(connectionString));
 
-            // Identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<BugTrackerContext>()
-                .AddDefaultTokenProviders();
-
             return services;
         }
 
         public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            // Authentication
             services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.SectionName));
             var authOptions = configuration.GetSection(AuthOptions.SectionName).Get<AuthOptions>();
             var secretKeyAsBytes = Encoding.UTF8.GetBytes(authOptions.SecretKey);
@@ -81,6 +75,16 @@ namespace Infrastructure.Extensions
 
         public static IServiceCollection AddServicesConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            // Identity
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<BugTrackerContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
+
             // AutoMapper
             services.AddAutoMapper(typeof(DependencyInjection));
 

@@ -52,7 +52,12 @@ namespace Infrastructure.Repositories
                 ProfileImageUrl = user.ProfileImage
             };
 
-            await _userManager.CreateAsync(appUser, user.Password);
+            var result = await _userManager.CreateAsync(appUser, user.Password);
+
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException(result.Errors.First().Description);
+            }
         }
 
         public async Task Delete(User user)
